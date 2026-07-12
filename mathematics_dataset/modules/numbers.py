@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 DeepMind Technologies Limited.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -109,13 +110,13 @@ def place_value(value, sample_args, context=None):
   integer_as_string = str(integer)
   num_digits = len(integer_as_string)
 
-  firsts = ['', 'ten ', 'hundred ']
+  firsts = ['', 'десятков ', 'сотен ']
   seconds = [
-      'thousands', 'millions', 'billions', 'trillions', 'quadrillions',
-      'quintillions', 'sextillions', 'septillions', 'octillions', 'nonillions',
-      'decillions',
+      'тысяч', 'миллионов', 'миллиардов', 'триллионов', 'квадриллионов',
+      'квинтиллионов', 'секстиллионов', 'септиллионов', 'октиллионов',
+      'нониллионов', 'дециллионов',
   ]
-  place_names = ['units', 'tens', 'hundreds']
+  place_names = ['единиц', 'десятков', 'сотен']
   for second in seconds:
     for first in firsts:
       place_names.append(first + second)
@@ -127,7 +128,7 @@ def place_value(value, sample_args, context=None):
   return example.Problem(
       question=example.question(
           context,
-          'What is the {place_name} digit of {integer}?',
+          'Какая цифра стоит в разряде {place_name} числа {integer}?',
           place_name=place_name, integer=entity.expression_else_handle),
       answer=answer)
 
@@ -159,7 +160,7 @@ def round_number(value, sample_args, context=None):
   if value_integer >= 0:
     remainder_range_upper -= 1
 
-  remainder = random.randint(remainder_range_lower, remainder_range_upper)
+  remainder = random.randint(int(remainder_range_lower), int(remainder_range_upper))
   input_ = value_integer + sympy.Rational(remainder, remainder_divisor)
   scale = 10**power if power >= 0 else sympy.Rational(1, 10**(-power))
   input_ = input_ * scale
@@ -174,28 +175,23 @@ def round_number(value, sample_args, context=None):
   if power > 0:
     # Rounding to a power of ten.
     round_to = 10**power
-    if random.choice([False, True]):
-      # Write the rounding value as a word instead.
-      round_to = display.StringNumber(round_to,
-                                      join_number_words_with_hyphens=False)
-    description = 'the nearest {round_to}'.format(round_to=round_to)
+    description = str(round_to)
   elif power == 0 and random.choice([False, True]):
     # Round to nearest integer.
-    description = 'the nearest integer'
+    description = 'ближайшего целого'
   else:
     # Round to decimal places.
-    description = random.choice(['{dps} decimal place', '{dps} dp'])
-    if power != -1:
-      # Plural
-      description += 's'
     dps = -power
     if random.choice([False, True]):
       dps = display.StringNumber(dps)
-    description = description.format(dps=dps)
+    if dps == 1:
+      description = '{} знака после запятой'.format(dps)
+    else:
+      description = '{} знаков после запятой'.format(dps)
 
   template = random.choice([
-      'Round {input} to {description}.',
-      'What is {input} rounded to {description}?',
+      'Округлите {input} до {description}.',
+      'Чему равно {input}, округлённое до {description}?',
   ])
 
   return example.Problem(
@@ -248,14 +244,14 @@ def is_prime(value, sample_args, context=None):
 
   if random.choice([False, True]) and integer != 1:
     answer = not is_prime_
-    attribute_name = random.choice(['composite', 'a composite number'])
+    attribute_name = random.choice(['составным', 'составным числом'])
   else:
     answer = is_prime_
-    attribute_name = random.choice(['prime', 'a prime number'])
+    attribute_name = random.choice(['простым', 'простым числом'])
 
   return example.Problem(
       question=example.question(
-          context, 'Is {integer} {attribute}?',
+          context, 'Является ли {integer} {attribute}?',
           integer=integer_entity.expression_else_handle,
           attribute=attribute_name),
       answer=answer)
@@ -282,13 +278,13 @@ def is_factor(value, sample_args, context=None):
   (entity,) = context.sample(sample_args, [integer])
 
   templates = [
-      'Is {maybe_factor} a factor of {value}?',
-      'Is {value} a multiple of {maybe_factor}?',
-      'Does {maybe_factor} divide {value}?',
+      'Является ли {maybe_factor} делителем {value}?',
+      'Кратно ли {value} числу {maybe_factor}?',
+      'Делится ли {value} на {maybe_factor}?',
   ]
   if maybe_factor == 2:
     templates += [
-        'Is {value} even?',
+        'Является ли {value} чётным?',
     ]
   template = random.choice(templates)
 
@@ -314,8 +310,8 @@ def list_prime_factors(value, sample_args, context=None):
   (entity,) = context.sample(sample_args, [integer])
   prime_factors = sorted(sympy.factorint(integer).keys())
   template = random.choice([
-      'What are the prime factors of {integer}?',
-      'List the prime factors of {integer}.',
+      'Каковы простые делители числа {integer}?',
+      'Перечислите простые делители числа {integer}.',
   ])
   return example.Problem(
       question=example.question(
@@ -353,10 +349,10 @@ def lcm(value, sample_args, context=None):
   if random.choice([False, True]):
     p, q = context.sample(sample_args, [p, q])
     # Ask the question directly.
-    adjective = random.choice(['least', 'lowest', 'smallest'])
+    adjective = random.choice(['наименьшее', 'наименьшее', 'наименьшее'])
     template = random.choice([
-        'Calculate the {adjective} common multiple of {p} and {q}.',
-        'What is the {adjective} common multiple of {p} and {q}?',
+        'Вычислите {adjective} общее кратное чисел {p} и {q}.',
+        'Чему равно {adjective} общее кратное чисел {p} и {q}?',
     ])
     return example.Problem(
         question=example.question(
@@ -370,9 +366,9 @@ def lcm(value, sample_args, context=None):
     p, q = context.sample(sample_args, [p, q])
 
     template = random.choice([
-        'What is the common denominator of {p} and {q}?',
-        'Find the common denominator of {p} and {q}.',
-        'Calculate the common denominator of {p} and {q}.',
+        'Чему равен общий знаменатель дробей {p} и {q}?',
+        'Найдите общий знаменатель дробей {p} и {q}.',
+        'Вычислите общий знаменатель дробей {p} и {q}.',
     ])
     return example.Problem(
         question=example.question(
@@ -426,13 +422,12 @@ def gcd(value, sample_args, context=None):
 
   p, q = context.sample(sample_args, [p, q])
 
-  adjective = (random.choice(['greatest', 'highest']) + ' common '
-               + random.choice(['divisor', 'factor']))
+  adjective = 'наибольший общий делитель'
 
   if is_question:
     template = random.choice([
-        'Calculate the {adjective} of {p} and {q}.',
-        'What is the {adjective} of {p} and {q}?',
+        'Вычислите {adjective} чисел {p} и {q}.',
+        'Чему равен {adjective} чисел {p} и {q}?',
     ])
     return example.Problem(
         question=example.question(
@@ -442,7 +437,7 @@ def gcd(value, sample_args, context=None):
     return composition.Entity(
         context=context,
         value=value,
-        description='Let {self} be the {adjective} of {p} and {q}.',
+        description='Пусть {self} — это {adjective} чисел {p} и {q}.',
         adjective=adjective, p=p, q=q)
 
 
@@ -470,8 +465,8 @@ def div_remainder(value, sample_args, context=None):
 
   if is_question:
     template = random.choice([
-        'Calculate the remainder when {p} is divided by {q}.',
-        'What is the remainder when {p} is divided by {q}?',
+        'Вычислите остаток от деления {p} на {q}.',
+        'Чему равен остаток от деления {p} на {q}?',
     ])
     return example.Problem(
         question=example.question(
@@ -482,7 +477,7 @@ def div_remainder(value, sample_args, context=None):
     return composition.Entity(
         context=context,
         value=value,
-        description='Let {self} be the remainder when {p} is divided by {q}.',
+        description='Пусть {self} — остаток от деления {p} на {q}.',
         p=p, q=q)
 
 
@@ -503,9 +498,9 @@ def base_conversion(min_entropy, max_entropy):
 
   value = number.integer(entropy, signed=True)
   template = random.choice([
-      '{from_str} (base {from_base}) to base {to_base}',
-      'Convert {from_str} (base {from_base}) to base {to_base}.',
-      'What is {from_str} (base {from_base}) in base {to_base}?',
+      '{from_str} (основание {from_base}) в основание {to_base}',
+      'Переведите {from_str} (основание {from_base}) в основание {to_base}.',
+      'Чему равно {from_str} (основание {from_base}) в основании {to_base}?',
   ])
   return example.Problem(
       question=example.question(

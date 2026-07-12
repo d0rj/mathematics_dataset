@@ -33,7 +33,7 @@ class ArithmeticTest(absltest.TestCase):
 
     exp = sympy.sympify('1/2')
     self.assertEqual(arithmetic._surd_coefficients(exp),
-                     (1/2, 0))
+                     (sympy.Rational(1, 2), 0))
 
     exp = sympy.sympify('sqrt(2)')
     self.assertEqual(arithmetic._surd_coefficients(exp),
@@ -45,7 +45,7 @@ class ArithmeticTest(absltest.TestCase):
 
     exp = sympy.sympify('3*sqrt(5)/2')
     self.assertEqual(arithmetic._surd_coefficients(exp),
-                     (0, 3/2))
+                     (0, sympy.Rational(3, 2)))
 
     exp = sympy.sympify('1 + 3 * sqrt(2)')
     self.assertEqual(arithmetic._surd_coefficients(exp),
@@ -53,11 +53,11 @@ class ArithmeticTest(absltest.TestCase):
 
     exp = sympy.sympify('1/2 + 3 * sqrt(5) / 2')
     self.assertEqual(arithmetic._surd_coefficients(exp),
-                     (1/2, 3/2))
+                     (sympy.Rational(1, 2), sympy.Rational(3, 2)))
 
     exp = sympy.sympify('sqrt(2)/(-1 + 2*sqrt(2))**2')
     self.assertEqual(arithmetic._surd_coefficients(exp),
-                     (8/49, 9/49))
+                     (sympy.Rational(8, 49), sympy.Rational(9, 49)))
 
 
 if __name__ == '__main__':

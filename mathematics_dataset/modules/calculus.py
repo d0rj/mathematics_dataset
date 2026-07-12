@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 DeepMind Technologies Limited.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,26 +87,26 @@ def _generate_polynomial(num_variables, entropy, derivative_order,
 def _template(module_count, derivative_order, num_variables):
   """Selects appropriate template."""
   templates = [
-      'Find the {nth} derivative of {eq} wrt {var}.',
-      'What is the {nth} derivative of {eq} wrt {var}?',
+      'Найдите {nth} производную от {eq} по {var}.',
+      'Чему равна {nth} производная от {eq} по {var}?',
   ]
   if derivative_order == 1:
     templates += [
-        'Differentiate {eq} with respect to {var}.',
-        'Differentiate {eq} wrt {var}.',
-        'What is the derivative of {eq} wrt {var}?',
+        'Найдите производную {eq} по {var}.',
+        'Продифференцируйте {eq} по {var}.',
+        'Чему равна производная от {eq} по {var}?',
     ]
 
   derivative_variable_is_unambiguous = num_variables == 1 and module_count == 1
   if derivative_variable_is_unambiguous:
     templates += [
-        'Find the {nth} derivative of {eq}.',
-        'What is the {nth} derivative of {eq}?',
+        'Найдите {nth} производную от {eq}.',
+        'Чему равна {nth} производная от {eq}?',
     ]
     if derivative_order == 1:
       templates += [
-          'Differentiate {eq}.',
-          'What is the derivative of {eq}?',
+          'Найдите производную {eq}.',
+          'Чему равна производная от {eq}?',
       ]
 
   return random.choice(templates)
@@ -183,7 +184,7 @@ def _differentiate_polynomial(value, sample_args, context, num_variables):
     return composition.Entity(
         context=context,
         value=composition.Polynomial(value),
-        description='Let {fn}({variables}) be the {nth} derivative of {eq}.',
+        description='Пусть {fn}({variables}) — это {nth} производная от {eq}.',
         handle=composition.FunctionHandle(fn_symbol),
         fn=fn_symbol, variables=variables_string, nth=nth, eq=polynomial)
 

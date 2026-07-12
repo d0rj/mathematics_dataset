@@ -146,7 +146,7 @@ class OpsTest(absltest.TestCase):
 
     pow_ = ops.Pow(sympy.Rational(1, 2), 3)
     self.assertEqual(str(pow_), '(1/2)**3')
-    self.assertEqual(pow_.sympy(), 1/8)
+    self.assertEqual(pow_.sympy(), sympy.Rational(1, 8))
 
     pow_ = ops.Pow(3, ops.Pow(2, 1))
     self.assertEqual(str(pow_), '3**(2**1)')

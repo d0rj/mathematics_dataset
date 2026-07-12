@@ -19,6 +19,8 @@ from __future__ import division
 from __future__ import print_function
 
 import collections
+import io
+import sys
 import textwrap
 
 # Dependency imports
@@ -68,6 +70,7 @@ def _make_entropy_fn(level, num_levels):
 def _filter_and_flatten(modules_):
   """Returns flattened dict, filtered according to FLAGS."""
   flat = collections.OrderedDict()
+  filter_ = FLAGS.filter if FLAGS.is_parsed() else ''
 
   def add(submodules, prefix=None):
     for key, module_or_function in six.iteritems(submodules):
@@ -75,7 +78,7 @@ def _filter_and_flatten(modules_):
       if isinstance(module_or_function, dict):
         add(module_or_function, full_name)
       else:
-        if FLAGS.filter not in full_name:
+        if filter_ not in full_name:
           continue
         flat[full_name] = module_or_function
 
@@ -105,12 +108,19 @@ def init_modules(train_split=False):
   all_modules['interpolate'] = modules.test()
   all_modules['extrapolate'] = modules.test_extra()
 
-  counts['train'] = FLAGS.per_train_module
-  counts['train-easy'] = FLAGS.per_train_module // 3
-  counts['train-medium'] = FLAGS.per_train_module // 3
-  counts['train-hard'] = FLAGS.per_train_module // 3
-  counts['interpolate'] = FLAGS.per_test_module
-  counts['extrapolate'] = FLAGS.per_test_module
+  if FLAGS.is_parsed():
+    per_train_module = FLAGS.per_train_module
+    per_test_module = FLAGS.per_test_module
+  else:
+    per_train_module = 10
+    per_test_module = 10
+
+  counts['train'] = per_train_module
+  counts['train-easy'] = per_train_module // 3
+  counts['train-medium'] = per_train_module // 3
+  counts['train-hard'] = per_train_module // 3
+  counts['interpolate'] = per_test_module
+  counts['extrapolate'] = per_test_module
 
   for regime_, modules_ in six.iteritems(all_modules):
     filtered_modules[regime_] = _filter_and_flatten(modules_)
@@ -147,6 +157,8 @@ def sample_from_module(module):
 
 def main(unused_argv):
   """Prints Q&As from modules according to FLAGS.filter."""
+  # Ensure UTF-8 output on all platforms (e.g. Windows consoles).
+  sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
   init_modules()
 
   text_wrapper = textwrap.TextWrapper(
@@ -161,8 +173,13 @@ def main(unused_argv):
       for _ in range(per_module):
         problem, extra_dropped = sample_from_module(module)
         num_dropped += extra_dropped
+        answer = str(problem.answer)
+        if answer == 'True':
+          answer = 'Истина'
+        elif answer == 'False':
+          answer = 'Ложь'
         text = text_wrapper.fill(
-            '{}  \033[92m{}\033[0m'.format(problem.question, problem.answer))
+            '{}  \033[92m{}\033[0m'.format(problem.question, answer))
         print(text)
       if num_dropped > 0:
         logging.warning('Dropped %d examples', num_dropped)

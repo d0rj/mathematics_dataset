@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 DeepMind Technologies Limited.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +49,7 @@ _SWR_SAMPLE_COUNT = [2, 4]
 _SWR_SAMPLE_COUNT_EXTRAPOLATE = [5, 5]
 
 _GERUNDS = {
-    'pick': 'picking',
+    'pick': 'выбирая',
 }
 
 
@@ -103,11 +104,11 @@ def _sequence_event(values, length, verb):
   events = [probability.DiscreteEvent([sample]) for sample in samples]
   event = probability.FiniteProductEvent(events)
   sequence = ''.join(str(sample) for sample in samples)
-  event_description = 'sequence {sequence}'.format(sequence=sequence)
+  event_description = 'последовательность {sequence}'.format(sequence=sequence)
   return event, event_description
 
 
-def _word_series(words, conjunction='and'):
+def _word_series(words, conjunction='и'):
   """Combines the words using commas and the final conjunction."""
   len_words = len(words)
   if len_words == 0:
@@ -200,7 +201,7 @@ def _swr_space(is_train, sample_range):
 
   random_variable.description = (
       str(display.StringNumber(num_sampled))
-      + ' letters picked without replacement from '
+      + ' буквы выбраны без возвращения из '
       + sample.bag_contents)
 
   return sample.letters_distinct, space, random_variable
@@ -235,10 +236,10 @@ def _sample_without_replacement_probability_question(
   context = composition.Context()
 
   template = random.choice([
-      '{random_variable_capitalize}. What is prob of {event}?',
-      '{random_variable_capitalize}. Give prob of {event}.',
-      'What is prob of {event} when {random_variable}?',
-      'Calculate prob of {event} when {random_variable}.',
+      '{random_variable_capitalize}. Какова вероятность события {event}?',
+      '{random_variable_capitalize}. Найдите вероятность события {event}.',
+      'Какова вероятность события {event}, когда {random_variable}?',
+      'Вычислите вероятность события {event}, когда {random_variable}.',
   ])
   question = example.question(
       context,

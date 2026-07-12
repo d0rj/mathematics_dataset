@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 DeepMind Technologies Limited.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,41 +37,53 @@ import sympy
 
 # For converting integers to words:
 _INTEGER_LOW = [
-    'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
-    'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteeen', 'fifteen',
-    'sixteen', 'seventeen', 'eighteen', 'nineteen'
+    'ноль', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь',
+    'девять', 'десять', 'одиннадцать', 'двенадцать', 'тринадцать',
+    'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать',
+    'девятнадцать'
 ]
 _INTEGER_MID = [
-    '', '', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty',
-    'ninety'
+    '', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят',
+    'семьдесят', 'восемьдесят', 'девяносто'
 ]
 _INTEGER_HIGH = [
-    (int(1e12), 'trillion'), (int(1e9), 'billion'), (int(1e6), 'million'),
-    (int(1e3), 'thousand'), (100, 'hundred')
+    (int(1e12), 'триллионов'), (int(1e9), 'миллиардов'),
+    (int(1e6), 'миллионов'), (int(1e3), 'тысяч'), (100, 'сто')
 ]
 
+
+# Russian hundreds (nominative singular).
+_HUNDREDS = [
+    '', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот',
+    'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'
+]
+
+# Feminine forms of small numerals, used with fractions.
+_FEMININE_NUMERALS = {
+    1: 'одна', 2: 'две'
+}
 
 # For converting rationals to words:
 _SINGULAR_DENOMINATORS = [
-    '', '', 'half', 'third', 'quarter', 'fifth', 'sixth', 'seventh', 'eighth',
-    'ninth', 'tenth', 'eleventh', 'twelth', 'thirteenth', 'fourteenth',
-    'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth',
-    'twentieth'
+    '', '', 'половина', 'треть', 'четверть', 'пятая', 'шестая', 'седьмая',
+    'восьмая', 'девятая', 'десятая', 'одиннадцатая', 'двенадцатая',
+    'тринадцатая', 'четырнадцатая', 'пятнадцатая', 'шестнадцатая',
+    'семнадцатая', 'восемнадцатая', 'девятнадцатая', 'двадцатая'
 ]
 _PLURAL_DENOMINATORS = [
-    '', '', 'halves', 'thirds', 'quarters', 'fifths', 'sixths', 'sevenths',
-    'eighths', 'ninths', 'tenths', 'elevenths', 'twelths', 'thirteenths',
-    'fourteenths', 'fifteenths', 'sixteenths', 'seventeenths', 'eighteenths',
-    'nineteenths', 'twentieths'
+    '', '', 'половины', 'трети', 'четверти', 'пятых', 'шестых', 'седьмых',
+    'восьмых', 'девятых', 'десятых', 'одиннадцатых', 'двенадцатых',
+    'тринадцатых', 'четырнадцатых', 'пятнадцатых', 'шестнадцатых',
+    'семнадцатых', 'восемнадцатых', 'девятнадцатых', 'двадцатых'
 ]
 
 
 # For converting ordinals to words:
 _ORDINALS = [
-    'zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh',
-    'eighth', 'ninth', 'tenth', 'eleventh', 'twelth', 'thirteenth',
-    'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth',
-    'nineteenth', 'twentieth'
+    'нулевой', 'первый', 'второй', 'третий', 'четвёртый', 'пятый', 'шестой',
+    'седьмой', 'восьмой', 'девятый', 'десятый', 'одиннадцатый', 'двенадцатый',
+    'тринадцатый', 'четырнадцатый', 'пятнадцатый', 'шестнадцатый',
+    'семнадцатый', 'восемнадцатый', 'девятнадцатый', 'двадцатый'
 ]
 
 
@@ -173,7 +186,12 @@ class Decimal(object):
   # support inequality comparison between sympy objects and objects that are not
   # convertible to sympy objects (such as strings).
   def __eq__(self, other):
+    if isinstance(other, float):
+      return float(self.value) == other
     return self.value == other
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
 
   # Python 2 comparison
   def __cmp__(self, other):
@@ -240,7 +258,7 @@ class NonSimpleRational(object):
 class StringNumber(object):
   """A string representing a number, that can also be sympified."""
 
-  def __init__(self, value, join_number_words_with_hyphens=True):
+  def __init__(self, value, join_number_words_with_hyphens=False):
     """Initializes a `StringNumber`.
 
     Args:
@@ -272,10 +290,13 @@ class StringNumber(object):
     for value, word in _INTEGER_HIGH:
       if integer >= value:
         den, rem = divmod(integer, value)
-        words = self._integer_to_words(den) + [word]
+        if value == 100:
+          words = [_HUNDREDS[den]]
+        else:
+          words = self._integer_to_words(den) + [word]
         if rem > 0:
           if rem < 100:
-            words.append('and')
+            words.append('и')
           words += self._integer_to_words(rem)
         return words
 
@@ -284,17 +305,20 @@ class StringNumber(object):
     numer = sympy.numer(rational)
     denom = sympy.denom(rational)
 
-    numer_words = self._to_string(numer)
-
     if denom == 1:
-      return numer_words
+      return self._to_string(numer)
 
     if denom <= 0 or denom >= len(_PLURAL_DENOMINATORS):
       raise ValueError('Unsupported denominator {}.'.format(denom))
 
     if numer == 1:
+      numer_words = _FEMININE_NUMERALS.get(int(numer), self._to_string(numer))
       denom_word = _SINGULAR_DENOMINATORS[denom]
+    elif int(numer) in _FEMININE_NUMERALS:
+      numer_words = _FEMININE_NUMERALS[int(numer)]
+      denom_word = _PLURAL_DENOMINATORS[denom]
     else:
+      numer_words = self._to_string(numer)
       denom_word = _PLURAL_DENOMINATORS[denom]
 
     return '{} {}'.format(numer_words, denom_word)

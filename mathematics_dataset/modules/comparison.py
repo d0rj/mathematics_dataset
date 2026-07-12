@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 DeepMind Technologies Limited.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,14 +102,14 @@ def _make_comparison_question(context, left, right):
       answer = (
           left.handle if sympy.Gt(left.value, right.value) else right.handle)
       template = random.choice([
-          'Which is bigger: {left} or {right}?',
-          'Which is greater: {left} or {right}?',
+          'Что больше: {left} или {right}?',
+          'Какое значение больше: {left} или {right}?',
       ])
     else:
       answer = (
           left.handle if sympy.Lt(left.value, right.value) else right.handle)
       template = random.choice([
-          'Which is smaller: {left} or {right}?',
+          'Что меньше: {left} или {right}?',
       ])
     return example.Problem(
         question=example.question(context, template, left=left, right=right),
@@ -125,40 +126,40 @@ def _make_comparison_question(context, left, right):
 
   templates = {
       '<': [
-          'Is {left} ' + ops.LT_SYMBOL + ' {right}?',
-          'Is {left} less than {right}?',
-          'Is {left} smaller than {right}?',
+          '{left} ' + ops.LT_SYMBOL + ' {right}?',
+          '{left} меньше {right}?',
+          '{left} меньше {right}?',
       ],
       '<=': [
-          'Is {left} ' + ops.LE_SYMBOL + ' {right}?',
-          'Is {left} less than or equal to {right}?',
-          'Is {left} at most {right}?',
-          'Is {left} at most as big as {right}?',
+          '{left} ' + ops.LE_SYMBOL + ' {right}?',
+          '{left} меньше или равно {right}?',
+          '{left} не больше {right}?',
+          '{left} не больше {right}?',
       ],
       '>': [
-          'Is {left} ' + ops.GT_SYMBOL + ' {right}?',
-          'Is {left} greater than {right}?',
-          'Is {left} bigger than {right}?',
+          '{left} ' + ops.GT_SYMBOL + ' {right}?',
+          '{left} больше {right}?',
+          '{left} больше {right}?',
       ],
       '>=': [
-          'Is {left} ' + ops.GE_SYMBOL + ' {right}?',
-          'Is {left} greater than or equal to {right}?',
-          'Is {left} at least {right}?',
-          'Is {left} at least as big as {right}?',
+          '{left} ' + ops.GE_SYMBOL + ' {right}?',
+          '{left} больше или равно {right}?',
+          '{left} не меньше {right}?',
+          '{left} не меньше {right}?',
       ],
       '=': [
-          'Does {left} ' + ops.EQ_SYMBOL + ' {right}?',
-          'Are {left} and {right} equal?',
-          'Is {left} equal to {right}?',
-          'Do {left} and {right} have the same value?',
+          '{left} ' + ops.EQ_SYMBOL + ' {right}?',
+          '{left} и {right} равны?',
+          '{left} равно {right}?',
+          '{left} и {right} имеют одинаковое значение?',
       ],
       '!=': [
-          'Is {left} ' + ops.NE_SYMBOL + ' {right}?',
-          'Is {left} not equal to {right}?',
-          'Are {left} and {right} unequal?',
-          'Are {left} and {right} nonequal?',
-          'Are {left} and {right} non-equal?',
-          'Do {left} and {right} have different values?',
+          '{left} ' + ops.NE_SYMBOL + ' {right}?',
+          '{left} не равно {right}?',
+          '{left} и {right} не равны?',
+          '{left} и {right} не равны?',
+          '{left} и {right} не равны?',
+          '{left} и {right} имеют разные значения?',
       ],
   }
 
@@ -260,7 +261,7 @@ def _kth_biggest_list_question(context, entities, adjective, answer):
   entity_dict, values_template = _entities_to_list(entities)
 
   question = example.question(
-      context, 'What is the {adjective} value in ' + values_template + '?',
+      context, 'Какое {adjective} значение среди ' + values_template + '?',
       adjective=adjective, **entity_dict)
   return example.Problem(question=question, answer=answer.handle)
 
@@ -270,7 +271,7 @@ def _kth_biggest_multichoice_question(context, entities, adjective, answer):
   entity_dict, choices_template, answer_choice = _entities_to_choices(
       entities, answer)
   question = example.question(
-      context, 'Which is the {adjective} value?' + choices_template,
+      context, 'Какое значение {adjective}?' + choices_template,
       adjective=adjective, **entity_dict)
   return example.Problem(question=question, answer=answer_choice)
 
@@ -324,14 +325,14 @@ def kth_biggest(sample_args, count=None):
   if random.choice([False, True]):
     # Do from biggest.
     answer = sorted_entities[-ordinal]
-    adjective = 'biggest'
+    adjective = 'наибольшее'
   else:
     # Do from smallest.
     answer = sorted_entities[ordinal - 1]
-    adjective = 'smallest'
+    adjective = 'наименьшее'
 
   if ordinal > 1:
-    adjective = str(display.StringOrdinal(ordinal)) + ' ' + adjective
+    adjective = str(display.StringOrdinal(ordinal)) + '-е ' + adjective
 
   if display_multichoice:
     return _kth_biggest_multichoice_question(
@@ -347,7 +348,7 @@ def _closest_in_list_question(context, entities, target, adjective, answer):
 
   question = example.question(
       context,
-      'What is the {adjective} to {target} in ' + values_template + '?',
+      'Какое значение {adjective} к {target} среди ' + values_template + '?',
       adjective=adjective, target=target, **entity_dict)
   return example.Problem(question=question, answer=answer.handle)
 
@@ -359,7 +360,7 @@ def _closest_multichoice_question(context, entities, target, adjective, answer):
 
   question = example.question(
       context,
-      'Which is the {adjective} to {target}?' + choices_template,
+      'Какое значение {adjective} к {target}?' + choices_template,
       adjective=adjective, target=target, **entity_dict)
   return example.Problem(question=question, answer=answer_choice)
 
@@ -400,7 +401,7 @@ def closest(sample_args, count=None):
   min_difference = min(differences)
   answer_index = differences.index(min_difference)
   answer = entities[answer_index]
-  adjective = random.choice(['closest', 'nearest'])
+  adjective = random.choice(['ближайшее', 'ближайшее'])
 
   if display_multichoice:
     return _closest_multichoice_question(
@@ -428,14 +429,14 @@ def sort(sample_args, count=None):
 
   ascending = random.choice([False, True])
   templates = [
-      'Sort ' + unsorted_template + ' in {direction} order.',
-      'Put ' + unsorted_template + ' in {direction} order.',
+      'Расположите ' + unsorted_template + ' в {direction} порядке.',
+      'Поставьте ' + unsorted_template + ' в {direction} порядке.',
   ]
   if ascending:
-    templates.append('Sort ' + unsorted_template + '.')
-    direction = random.choice(['ascending', 'increasing'])
+    templates.append('Отсортируйте ' + unsorted_template + '.')
+    direction = random.choice(['возрастающем', 'возрастающем'])
   else:
-    direction = random.choice(['descending', 'decreasing'])
+    direction = random.choice(['убывающем', 'убывающем'])
   template = random.choice(templates)
 
   sorted_entities = sorted(

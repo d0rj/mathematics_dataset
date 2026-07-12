@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 DeepMind Technologies Limited.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -187,17 +188,17 @@ def polynomial_roots(value, sample_args, context=None):
       variable = sympy.Symbol(context.pop())
       equality = ops.Eq(polynomial_entity.handle.apply(variable), 0)
     template = random.choice([
-        'Let {equality}. What is {variable}?',
-        'Let {equality}. Calculate {variable}.',
-        'Suppose {equality}. What is {variable}?',
-        'Suppose {equality}. Calculate {variable}.',
-        'What is {variable} in {equality}?',
-        'Solve {equality} for {variable}.',
-        'Find {variable} such that {equality}.',
-        'Find {variable}, given that {equality}.',
-        'Determine {variable} so that {equality}.',
-        'Determine {variable}, given that {equality}.',
-        'Solve {equality}.'
+        'Пусть {equality}. Чему равно {variable}?',
+        'Пусть {equality}. Найдите {variable}.',
+        'Предположим, что {equality}. Чему равно {variable}?',
+        'Предположим, что {equality}. Найдите {variable}.',
+        'Чему равно {variable} в уравнении {equality}?',
+        'Решите {equality} относительно {variable}.',
+        'Найдите {variable}, при котором {equality}.',
+        'Найдите {variable}, если {equality}.',
+        'Определите {variable} так, чтобы {equality}.',
+        'Определите {variable}, если {equality}.',
+        'Решите {equality}.'
     ])
     return example.Problem(
         question=example.question(
@@ -213,7 +214,7 @@ def polynomial_roots(value, sample_args, context=None):
     factored = sympy.factor(
         polynomials.coefficients_to_polynomial(coeffs, variable))
     template = random.choice([
-        'Factor {expression}.',
+        'Разложите на множители {expression}.',
     ])
     return example.Problem(
         question=example.question(context, template, expression=expression),
@@ -266,7 +267,7 @@ def _solve_linear_system(degree, value, sample_args, context=None):
 
   if is_question:
     template = random.choice([
-        'Solve {equations} for {variable}.',
+        'Решите систему {equations} относительно {variable}.',
     ])
     return example.Problem(
         example.question(
@@ -277,7 +278,7 @@ def _solve_linear_system(degree, value, sample_args, context=None):
     return composition.Entity(
         context=context,
         value=answer,
-        description='Suppose {equations}.',
+        description='Предположим, что {equations}.',
         handle=variable,
         equations=equations)
 
@@ -344,9 +345,9 @@ def sequence_next_term(min_entropy, max_entropy):
   sequence_sample = display.NumberList(sequence_sample)
 
   template = random.choice([
-      'What is next in {sequence}?',
-      'What comes next: {sequence}?',
-      'What is the next term in {sequence}?',
+      'Что следующее в последовательности {sequence}?',
+      'Какое число следующее: {sequence}?',
+      'Какой следующий член последовательности {sequence}?',
   ])
   answer = sequence.term(num_terms + 1)
 
@@ -368,7 +369,7 @@ def sequence_nth_term(min_entropy, max_entropy):
   sequence_sample = display.NumberList(sequence_sample)
 
   template = random.choice([
-      'What is the {variable}\'th term of {sequence}?',
+      'Какой {variable}-й член последовательности {sequence}?',
   ])
   answer = sequence.sympy
 
