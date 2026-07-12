@@ -182,10 +182,8 @@ def round_number(value, sample_args, context=None):
   else:
     # Round to decimal places.
     dps = -power
-    if random.choice([False, True]):
-      dps = display.StringNumber(dps)
     if dps == 1:
-      description = '{} знака после запятой'.format(dps)
+      description = 'одного знака после запятой'
     else:
       description = '{} знаков после запятой'.format(dps)
 
@@ -498,7 +496,6 @@ def base_conversion(min_entropy, max_entropy):
 
   value = number.integer(entropy, signed=True)
   template = random.choice([
-      '{from_str} (основание {from_base}) в основание {to_base}',
       'Переведите {from_str} (основание {from_base}) в основание {to_base}.',
       'Чему равно {from_str} (основание {from_base}) в основании {to_base}?',
   ])

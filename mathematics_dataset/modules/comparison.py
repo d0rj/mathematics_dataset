@@ -271,13 +271,24 @@ def _kth_biggest_multichoice_question(context, entities, adjective, answer):
   entity_dict, choices_template, answer_choice = _entities_to_choices(
       entities, answer)
   question = example.question(
-      context, 'Какое значение {adjective}?' + choices_template,
+      context, 'Какое из следующих значений {adjective}?' + choices_template,
       adjective=adjective, **entity_dict)
   return example.Problem(question=question, answer=answer_choice)
 
 
 def _entity_sort_key(entity):
   return sympy.default_sort_key(entity.value)
+
+
+def _ordinal_neuter(ordinal_str):
+  """Converts masculine ordinal to neuter, e.g. 'пятый' -> 'пятое'."""
+  if ordinal_str.endswith('ый'):
+    return ordinal_str[:-2] + 'ое'
+  if ordinal_str.endswith('ой'):
+    return ordinal_str[:-2] + 'ое'
+  if ordinal_str.endswith('ий'):
+    return ordinal_str[:-2] + 'ье'
+  return ordinal_str
 
 
 def _sort_count_range(entropy):
@@ -332,7 +343,7 @@ def kth_biggest(sample_args, count=None):
     adjective = 'наименьшее'
 
   if ordinal > 1:
-    adjective = str(display.StringOrdinal(ordinal)) + '-е ' + adjective
+    adjective = _ordinal_neuter(str(display.StringOrdinal(ordinal))) + ' ' + adjective
 
   if display_multichoice:
     return _kth_biggest_multichoice_question(
@@ -360,7 +371,7 @@ def _closest_multichoice_question(context, entities, target, adjective, answer):
 
   question = example.question(
       context,
-      'Какое значение {adjective} к {target}?' + choices_template,
+      'Какое из следующих значений {adjective} к {target}?' + choices_template,
       adjective=adjective, target=target, **entity_dict)
   return example.Problem(question=question, answer=answer_choice)
 

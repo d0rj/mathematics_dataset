@@ -307,7 +307,7 @@ def collect(value, sample_args, context=None):
   context.sample_by_replacing_constants(sample_args, unsimplified)
 
   if is_question:
-    template = 'Приведите подобные члены в {unsimplified}.'
+    template = 'Приведите подобные члены в выражении {unsimplified}.'
     return example.Problem(
         question=example.question(context, template, unsimplified=unsimplified),
         answer=simplified)

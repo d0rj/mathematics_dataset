@@ -134,12 +134,7 @@ def _level_set_event(values, length, verb):
       if counts_dict[value] > 0
   ]
   counts_and_values = _word_series(counts_and_values)
-  template = random.choice([
-      '{verbing} {counts_and_values}',
-  ])
-  verbing = _GERUNDS[verb]
-  event_description = template.format(
-      counts_and_values=counts_and_values, verbing=verbing)
+  event_description = 'выбраны {}'.format(counts_and_values)
   return event, event_description
 
 
@@ -199,9 +194,14 @@ def _swr_space(is_train, sample_range):
   random_variable = probability.FiniteProductRandomVariable(
       [sample.random_variable] * num_sampled)
 
+  if num_sampled == 1:
+    letters_phrase = 'одной буквы'
+  else:
+    letters_phrase = '{} букв'.format(num_sampled)
   random_variable.description = (
-      str(display.StringNumber(num_sampled))
-      + ' буквы выбраны без возвращения из '
+      'при выборе '
+      + letters_phrase
+      + ' без возвращения из '
       + sample.bag_contents)
 
   return sample.letters_distinct, space, random_variable
@@ -236,10 +236,10 @@ def _sample_without_replacement_probability_question(
   context = composition.Context()
 
   template = random.choice([
-      '{random_variable_capitalize}. Какова вероятность события {event}?',
-      '{random_variable_capitalize}. Найдите вероятность события {event}.',
-      'Какова вероятность события {event}, когда {random_variable}?',
-      'Вычислите вероятность события {event}, когда {random_variable}.',
+      '{random_variable_capitalize}. Какова вероятность события "{event}"?',
+      '{random_variable_capitalize}. Найдите вероятность события "{event}".',
+      'Какова вероятность события "{event}", если {random_variable}?',
+      'Вычислите вероятность события "{event}", если {random_variable}.',
   ])
   question = example.question(
       context,

@@ -84,15 +84,41 @@ def _generate_polynomial(num_variables, entropy, derivative_order,
       [extra_coefficients, coefficients], axis=derivative_axis)
 
 
+def _ordinal_accusative_feminine(ordinal_str):
+  """Converts masculine ordinal to accusative feminine, e.g. 'пятый'->'пятую'."""
+  if ordinal_str.endswith('ый'):
+    return ordinal_str[:-2] + 'ую'
+  if ordinal_str.endswith('ой'):
+    return ordinal_str[:-2] + 'ую'
+  if ordinal_str.endswith('ий'):
+    return ordinal_str[:-2] + 'ью'
+  return ordinal_str
+
+
+def _ordinal_nominative_feminine(ordinal_str):
+  """Converts masculine ordinal to nominative feminine, e.g. 'пятый'->'пятая'."""
+  if ordinal_str.endswith('ый'):
+    return ordinal_str[:-2] + 'ая'
+  if ordinal_str.endswith('ой'):
+    return ordinal_str[:-2] + 'ая'
+  if ordinal_str.endswith('ий'):
+    return ordinal_str[:-2] + 'ья'
+  return ordinal_str
+
+
 def _template(module_count, derivative_order, num_variables):
   """Selects appropriate template."""
+  nth = display.StringOrdinal(derivative_order)
+  nth_acc = _ordinal_accusative_feminine(str(nth))
+  nth_nom = _ordinal_nominative_feminine(str(nth))
+
   templates = [
-      'Найдите {nth} производную от {eq} по {var}.',
-      'Чему равна {nth} производная от {eq} по {var}?',
+      'Найдите {nth_acc} производную от {eq} по {var}.',
+      'Чему равна {nth_nom} производная от {eq} по {var}?',
   ]
   if derivative_order == 1:
     templates += [
-        'Найдите производную {eq} по {var}.',
+        'Найдите производную от {eq} по {var}.',
         'Продифференцируйте {eq} по {var}.',
         'Чему равна производная от {eq} по {var}?',
     ]
@@ -100,12 +126,12 @@ def _template(module_count, derivative_order, num_variables):
   derivative_variable_is_unambiguous = num_variables == 1 and module_count == 1
   if derivative_variable_is_unambiguous:
     templates += [
-        'Найдите {nth} производную от {eq}.',
-        'Чему равна {nth} производная от {eq}?',
+        'Найдите {nth_acc} производную от {eq}.',
+        'Чему равна {nth_nom} производная от {eq}?',
     ]
     if derivative_order == 1:
       templates += [
-          'Найдите производную {eq}.',
+          'Найдите производную от {eq}.',
           'Чему равна производная от {eq}?',
       ]
 
@@ -161,6 +187,8 @@ def _differentiate_polynomial(value, sample_args, context, num_variables):
   for _ in range(derivative_order):
     value = polynomials.differentiate(value, axis=derivative_axis)
   nth = display.StringOrdinal(derivative_order)
+  nth_acc = _ordinal_accusative_feminine(str(nth))
+  nth_nom = _ordinal_nominative_feminine(str(nth))
 
   if entity.has_expression():
     polynomial = entity.expression
@@ -175,7 +203,8 @@ def _differentiate_polynomial(value, sample_args, context, num_variables):
     answer = polynomials.coefficients_to_polynomial(value, variables).sympy()
     return example.Problem(
         question=example.question(
-            context, template, eq=polynomial, var=variable, nth=nth),
+            context, template, eq=polynomial, var=variable,
+            nth_acc=nth_acc, nth_nom=nth_nom),
         answer=answer)
   else:
     fn_symbol = context.pop()
@@ -184,9 +213,9 @@ def _differentiate_polynomial(value, sample_args, context, num_variables):
     return composition.Entity(
         context=context,
         value=composition.Polynomial(value),
-        description='Пусть {fn}({variables}) — это {nth} производная от {eq}.',
+        description='Пусть {fn}({variables}) — это {nth_nom} производная от {eq}.',
         handle=composition.FunctionHandle(fn_symbol),
-        fn=fn_symbol, variables=variables_string, nth=nth, eq=polynomial)
+        fn=fn_symbol, variables=variables_string, nth_nom=nth_nom, eq=polynomial)
 
 
 def differentiate_univariate(value, sample_args, context=None):

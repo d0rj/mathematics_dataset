@@ -146,8 +146,8 @@ def _add_question_or_entity(context, p, q, is_question):
         'Сложите {p} и {q}.',
         'Найдите сумму {p} и {q}.',
         'Сумма {p} и {q}.',
-        'Сколько будет {p} и {q} в сумме?',
-        'Сложите вместе {p} и {q}.',
+        'Сколько будет в сумме {p} и {q}?',
+        'Сложите вместе {p} и {q}.'
         'Сколько будет {p} плюс {q}?',
         'Вычислите {p} + {q}.',
         'Сколько будет {p} + {q}?',
@@ -248,10 +248,10 @@ def add_or_sub_in_base(sample_args):
   base = random.randint(2, 16)
   if random.choice([False, True]):
     answer = p + q
-    template = 'В системе счисления с основанием {base}, чему равно {p} + {q}?'
+    template = 'В системе счисления с основанием {base} чему равно {p} + {q}?'
   else:
     answer = p - q
-    template = 'В системе счисления с основанием {base}, чему равно {p} - {q}?'
+    template = 'В системе счисления с основанием {base} чему равно {p} - {q}?'
   return example.Problem(
       question=example.question(
           context,

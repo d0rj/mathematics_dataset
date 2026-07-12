@@ -266,9 +266,14 @@ def _solve_linear_system(degree, value, sample_args, context=None):
   equations = ', '.join([str(equation) for equation in equations])
 
   if is_question:
-    template = random.choice([
-        'Решите систему {equations} относительно {variable}.',
-    ])
+    if degree == 1:
+      template = random.choice([
+          'Решите уравнение {equations} относительно {variable}.',
+      ])
+    else:
+      template = random.choice([
+          'Решите систему {equations} относительно {variable}.',
+      ])
     return example.Problem(
         example.question(
             context, template, equations=equations,
@@ -345,8 +350,8 @@ def sequence_next_term(min_entropy, max_entropy):
   sequence_sample = display.NumberList(sequence_sample)
 
   template = random.choice([
-      'Что следующее в последовательности {sequence}?',
-      'Какое число следующее: {sequence}?',
+      'Что идёт следующим в последовательности {sequence}?',
+      'Какое следующее число: {sequence}?',
       'Какой следующий член последовательности {sequence}?',
   ])
   answer = sequence.term(num_terms + 1)

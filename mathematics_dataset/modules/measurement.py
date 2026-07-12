@@ -147,6 +147,164 @@ def pluralize(name):
   return irregular.get(name, name)
 
 
+def genitive_singular(name):
+  # Russian genitive singular forms for units ("килограмм" -> "килограмма").
+  irregular = {
+      'метр': 'метра',
+      'километр': 'километра',
+      'сантиметр': 'сантиметра',
+      'миллиметр': 'миллиметра',
+      'микрометр': 'микрометра',
+      'нанометр': 'нанометра',
+      'секунда': 'секунды',
+      'минута': 'минуты',
+      'час': 'часа',
+      'день': 'дня',
+      'неделя': 'недели',
+      'миллисекунда': 'миллисекунды',
+      'микросекунда': 'микросекунды',
+      'наносекунда': 'наносекунды',
+      'год': 'года',
+      'десятилетие': 'десятилетия',
+      'век': 'века',
+      'тысячелетие': 'тысячелетия',
+      'месяц': 'месяца',
+      'килограмм': 'килограмма',
+      'тонна': 'тонны',
+      'грамм': 'грамма',
+      'миллиграмм': 'миллиграмма',
+      'микрограмм': 'микрограмма',
+      'нанограмм': 'нанограмма',
+      'литр': 'литра',
+      'миллилитр': 'миллилитра',
+  }
+  return irregular.get(name, name)
+
+
+def accusative_singular(name):
+  # Russian accusative singular forms for units ("тонна" -> "тонну").
+  irregular = {
+      'метр': 'метр',
+      'километр': 'километр',
+      'сантиметр': 'сантиметр',
+      'миллиметр': 'миллиметр',
+      'микрометр': 'микрометр',
+      'нанометр': 'нанометр',
+      'секунда': 'секунду',
+      'минута': 'минуту',
+      'час': 'час',
+      'день': 'день',
+      'неделя': 'неделю',
+      'миллисекунда': 'миллисекунду',
+      'микросекунда': 'микросекунду',
+      'наносекунда': 'наносекунду',
+      'год': 'год',
+      'десятилетие': 'десятилетие',
+      'век': 'век',
+      'тысячелетие': 'тысячелетие',
+      'месяц': 'месяц',
+      'килограмм': 'килограмм',
+      'тонна': 'тонну',
+      'грамм': 'грамм',
+      'миллиграмм': 'миллиграмм',
+      'микрограмм': 'микрограмм',
+      'нанограмм': 'нанограмм',
+      'литр': 'литр',
+      'миллилитр': 'миллилитр',
+  }
+  return irregular.get(name, name)
+
+
+def nominative_plural(name):
+  # Russian nominative plural forms for units (used as accusative for inanimate).
+  irregular = {
+      'метр': 'метры',
+      'километр': 'километры',
+      'сантиметр': 'сантиметры',
+      'миллиметр': 'миллиметры',
+      'микрометр': 'микрометры',
+      'нанометр': 'нанометры',
+      'секунда': 'секунды',
+      'минута': 'минуты',
+      'час': 'часы',
+      'день': 'дни',
+      'неделя': 'недели',
+      'миллисекунда': 'миллисекунды',
+      'микросекунда': 'микросекунды',
+      'наносекунда': 'наносекунды',
+      'год': 'годы',
+      'десятилетие': 'десятилетия',
+      'век': 'веки',
+      'тысячелетие': 'тысячелетия',
+      'месяц': 'месяцы',
+      'килограмм': 'килограммы',
+      'тонна': 'тонны',
+      'грамм': 'граммы',
+      'миллиграмм': 'миллиграммы',
+      'микрограмм': 'микрограммы',
+      'нанограмм': 'нанограммы',
+      'литр': 'литры',
+      'миллилитр': 'миллилитры',
+  }
+  return irregular.get(name, name)
+
+
+def _unit_form_for_number(name, value):
+  """Returns the unit form that follows a numeric value.
+
+  E.g. 1 -> "метр", 2-4 -> "метра", 5+ -> "метров"; non-integers use the
+  genitive singular ("2.5 метра").
+  """
+  if isinstance(value, display.Decimal):
+    number_value = float(value.value)
+  else:
+    number_value = float(value)
+  if number_value == int(number_value):
+    number_value = int(number_value)
+    if number_value == 1:
+      return name
+    elif 2 <= number_value <= 4:
+      return genitive_singular(name)
+    else:
+      return pluralize(name)
+  else:
+    return genitive_singular(name)
+
+
+def prepositional_plural(name):
+  # Russian prepositional plural forms for units ("метр" -> "метрах").
+  irregular = {
+      'метр': 'метрах',
+      'километр': 'километрах',
+      'сантиметр': 'сантиметрах',
+      'миллиметр': 'миллиметрах',
+      'микрометр': 'микрометрах',
+      'нанометр': 'нанометрах',
+      'секунда': 'секундах',
+      'минута': 'минутах',
+      'час': 'часах',
+      'день': 'днях',
+      'неделя': 'неделях',
+      'миллисекунда': 'миллисекундах',
+      'микросекунда': 'микросекундах',
+      'наносекунда': 'наносекундах',
+      'год': 'годах',
+      'десятилетие': 'десятилетиях',
+      'век': 'веках',
+      'тысячелетие': 'тысячелетиях',
+      'месяц': 'месяцах',
+      'килограмм': 'килограммах',
+      'тонна': 'тоннах',
+      'грамм': 'граммах',
+      'миллиграмм': 'миллиграммах',
+      'микрограмм': 'микрограммах',
+      'нанограмм': 'нанограммах',
+      'литр': 'литрах',
+      'миллилитр': 'миллилитрах',
+  }
+  return irregular.get(name, name)
+
+
 def _factor_non_decimal(value):
   """Extras x dividing value such that x is coprime to 2 and 5."""
   result = 1
@@ -178,29 +336,28 @@ def _conversion_decimal(context, is_train, is_extrapolation):
     if train_test_split.is_train(base_value) == is_train:
       break
 
-  templates = [
-      'Сколько {target_name} в {base_value} {base_name}?',
-      'Сколько {base_value} {base_name} в {target_name}?',
-      'Переведите {base_value} {base_name} в {target_name}.',
-  ]
-  if base_unit.symbol is not None:
-    templates += [
-        'Сколько {target_name} в {base_value}{base_symbol}?',
-        'Сколько {base_value}{base_symbol} в {target_name}?',
-        'Переведите {base_value}{base_symbol} в {target_name}.',
-    ]
-  template = random.choice(templates)
+  base_form = _unit_form_for_number(base_unit.name, base_value)
+  base_prep = prepositional_plural(base_unit.name)
+  target_gen = pluralize(target_unit.name)
+  target_prep = prepositional_plural(target_unit.name)
+  target_nom = nominative_plural(target_unit.name)
 
-  base_name = pluralize(base_unit.name)
-  target_name = pluralize(target_unit.name)
+  templates = [
+      'Сколько {target_gen} в {base_value} {base_prep}?',
+      'Сколько {base_value} {base_form} в {target_prep}?',
+      'Переведите {base_value} {base_form} в {target_nom}.',
+  ]
+  template = random.choice(templates)
 
   question = example.question(
       context,
       template,
-      base_name=base_name,
-      base_symbol=base_unit.symbol,
       base_value=base_value,
-      target_name=target_name)
+      base_form=base_form,
+      base_prep=base_prep,
+      target_gen=target_gen,
+      target_prep=target_prep,
+      target_nom=target_nom)
   return example.Problem(question=question, answer=target_value)
 
 
@@ -226,20 +383,16 @@ def _conversion_fraction(context, is_train):
       break
 
   template = random.choice([
-      'Сколько {target_name} в {base_value} {base_name}?',
-      'Сколько {base_value} {base_name} в {target_name}?',
+      'Сколько {base_value} {base_name} в {target_prep}?',
   ])
 
-  if sympy.denom(base_value) > 20 or random.choice([False, True]):
-    base_value_string = base_value  # Will be represented as e.g., 2/3.
-  else:
-    base_value_string = display.StringNumber(base_value)  # e.g., two thirds
+  base_value_string = base_value  # e.g., 2/3
 
   question = example.question(
       context, template,
-      base_name=base_unit.name,
+      base_name=genitive_singular(base_unit.name),
       base_value=base_value_string,
-      target_name=pluralize(target_unit.name))
+      target_prep=prepositional_plural(target_unit.name))
   return example.Problem(question=question, answer=answer)
 
 
