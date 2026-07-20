@@ -51,7 +51,7 @@ class _SampleArgs(collections.namedtuple('SampleArgs', ('count', 'entropy'))):
       if not arg.is_Integer:
         count_split[i] += 1
     if all(count == 0 for count in count_split):
-      assert self.entropy == 0
+      assert abs(self.entropy) < 1e-9
       entropies = np.zeros(len(count_split))
     else:
       entropies = (
@@ -194,7 +194,7 @@ def _arithmetic(value, sample_args, add_sub, mul_div):
   """Internal arithmetic thingy...."""
   assert sample_args.count >= 0
   if sample_args.count == 0:
-    assert sample_args.entropy == 0
+    assert abs(sample_args.entropy) < 1e-9
     return ops.Constant(value)
 
   allowed = []

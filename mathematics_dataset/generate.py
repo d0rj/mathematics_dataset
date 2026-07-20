@@ -20,8 +20,11 @@ from __future__ import print_function
 
 import collections
 import io
+import random
 import sys
 import textwrap
+
+import numpy as np
 
 # Dependency imports
 from absl import app
@@ -30,6 +33,7 @@ from absl import logging
 from mathematics_dataset import generate_settings
 from mathematics_dataset.modules import modules
 import six
+from sympy.core.random import seed as sympy_seed
 from six.moves import range
 
 
@@ -38,6 +42,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('filter', '', 'restrict to matching module names')
 flags.DEFINE_integer('per_train_module', 10, 'Num of examples per train module')
 flags.DEFINE_integer('per_test_module', 10, 'Num of examples per test module')
+flags.DEFINE_integer('seed', None, 'Random seed for reproducible generation')
 flags.DEFINE_bool('show_dropped', False, 'Whether to print dropped questions')
 
 
@@ -157,6 +162,10 @@ def sample_from_module(module):
 
 def main(unused_argv):
   """Prints Q&As from modules according to FLAGS.filter."""
+  if FLAGS.seed is not None:
+    random.seed(FLAGS.seed)
+    np.random.seed(FLAGS.seed)
+    sympy_seed(FLAGS.seed)
   # Ensure UTF-8 output on all platforms (e.g. Windows consoles).
   sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
   init_modules()

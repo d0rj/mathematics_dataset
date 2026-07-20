@@ -35,6 +35,9 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import random
+
+import numpy as np
 
 # Dependency imports
 from absl import app
@@ -42,6 +45,7 @@ from absl import flags
 from absl import logging
 from mathematics_dataset import generate
 import six
+from sympy.core.random import seed as sympy_seed
 from six.moves import range
 
 FLAGS = flags.FLAGS
@@ -53,6 +57,10 @@ flags.mark_flag_as_required('output_dir')
 
 
 def main(unused_argv):
+  if generate.FLAGS.seed is not None:
+    random.seed(generate.FLAGS.seed)
+    np.random.seed(generate.FLAGS.seed)
+    sympy_seed(generate.FLAGS.seed)
   generate.init_modules(FLAGS.train_split)
 
   output_dir = os.path.expanduser(FLAGS.output_dir)
