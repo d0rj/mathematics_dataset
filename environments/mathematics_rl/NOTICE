@@ -1,0 +1,16 @@
+Mathematics RL, 2026.
+
+The task data and generated regression questions derive from DeepMind's
+Mathematics Dataset (Copyright 2018-2019 DeepMind Technologies Limited),
+licensed under Apache License 2.0.
+
+Saxton, Grefenstette, Hill, Kohli (2019),
+"Analysing Mathematical Reasoning Abilities of Neural Models", ICLR.
+https://arxiv.org/abs/1904.01557
+
+English generator: google-deepmind/mathematics_dataset,
+commit 427f45075f84b8b9774950196ad63867ca20ffb3.
+Russian generator: this translated checkout, base commit
+e97cd83e190163e025dd831886f05460a11c1bc8.
+
+Verifiers is a separate MIT-licensed dependency and is not vendored here.

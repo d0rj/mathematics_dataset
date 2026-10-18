@@ -1,0 +1,33 @@
+date = 2026-10-19
+package_version = "0.1.0"
+dataset_revision = "d9f78d0665b3a13dad21c6830b9b358c8a25ae74"
+modules = 70
+languages = 2
+answer_kinds = 12
+fixtures = 1434
+windows_passed = 1497
+windows_posix_module_skipped = 1
+wsl_passed = 1639
+real_v1_module_language_cases = 140
+scripted_endpoint_episodes = 6
+public_hub_rows_checked = 8
+real_model_benchmark = false
+training_run = false
+gpu_used = false
+hosted_ci_run = false
+hf_published = false
+
+[wheel]
+path = "dist/mathematics_rl-0.1.0-py3-none-any.whl"
+size = 27328
+sha256 = "fdd583f7382ba7e09ece76d1e4e52a11c96b255ccea7333527a9a67d75a8b80e"
+
+[sdist]
+path = "dist/mathematics_rl-0.1.0.tar.gz"
+size = 314998
+sha256 = "f0da7dbbacb36076b6cee125ee4d9795f021201ed8c98c7c79e766dec933027e"
+
+[release]
+manifest = "dist/hf-release-0.1.0/manifest.json"
+files = 25
+sha256 = "785e41f322b0a9fadea2334b6152093f43d95e567884d8eb1dbcfe748329a617"

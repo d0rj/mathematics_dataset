@@ -1,0 +1,21 @@
+seed = 20261018
+per_module_category = 3
+sympy = "1.14.0"
+
+[ru]
+file = "generated_ru.ndjson"
+rows = 717
+modules = 70
+python = "3.13.13"
+numpy = "2.3.4"
+generator_commit = "e97cd83e190163e025dd831886f05460a11c1bc8"
+sha256 = "3aa57e8e2ed5fe5c4b94a05d042e0014d21f83fcb3b5aef4cf31344d4bc9f0cd"
+
+[en]
+file = "generated_en.ndjson"
+rows = 717
+modules = 70
+python = "3.10.20"
+numpy = "1.26.4"
+generator_commit = "427f45075f84b8b9774950196ad63867ca20ffb3"
+sha256 = "46e42e2c356653fa0f845fad10d0e3d4d130790789928bc3a98109c926ee75a6"

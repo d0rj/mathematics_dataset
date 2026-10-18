@@ -1,5 +1,13 @@
 # Mathematics Dataset
 
+## Reinforcement learning environment
+
+The [Mathematics RL package](environments/mathematics_rl/README.md) implements the
+Verifiers v1 API for all 70 English/Russian modules, with typed exact rewards,
+bounded symbolic parsing, train/eval separation and regression tests.
+Dependencies are isolated from this original generator. The corrected Hub card
+and publication workflow live in [publication](publication/README.md).
+
 This dataset code generates mathematical question and answer pairs, from a range
 of question types at roughly school-level difficulty. This is designed to test
 the mathematical learning and algebraic reasoning skills of learning models.

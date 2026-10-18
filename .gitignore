@@ -161,6 +161,8 @@ activemq-data/
 .env
 .envrc
 .venv
+.venv-*/
+outputs/
 env/
 venv/
 ENV/
@@ -226,3 +228,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+graphify-out/
