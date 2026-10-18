@@ -1,33 +1,44 @@
 date = 2026-10-19
-package_version = "0.1.0"
+package_version = "0.2.0"
 dataset_revision = "d9f78d0665b3a13dad21c6830b9b358c8a25ae74"
 modules = 70
 languages = 2
 answer_kinds = 12
 fixtures = 1434
-windows_passed = 1497
-windows_posix_module_skipped = 1
-wsl_passed = 1639
-real_v1_module_language_cases = 140
-scripted_endpoint_episodes = 6
-public_hub_rows_checked = 8
+windows_passed = 1505
+windows_optional_modules_skipped = 5
+wsl_verifiers_passed = 1647
+wsl_verifiers_other_modules_skipped = 4
+wsl_other_frameworks_passed = 1515
+wsl_other_frameworks_verifiers_module_skipped = 1
+agentenv_bundle_additional_check_passed = 1
+module_language_pairs_per_framework = 140
+historical_v010_scripted_endpoint_episodes = 6
 real_model_benchmark = false
 training_run = false
 gpu_used = false
 hosted_ci_run = false
 hf_published = false
+harbor_docker_trial_run = false
+harbor_sdk_task_loading_verified = true
+openenv_real_client_transport_verified = true
+nemo_native_http_verified = true
+agentenv_real_episode_verified = true
 
 [wheel]
-path = "dist/mathematics_rl-0.1.0-py3-none-any.whl"
-size = 27328
-sha256 = "fdd583f7382ba7e09ece76d1e4e52a11c96b255ccea7333527a9a67d75a8b80e"
+path = "dist/mathematics_rl-0.2.0-py3-none-any.whl"
+size = 37036
+sha256 = "c028210bb101dd2f32dca1533e84a5f1d8d41554a7769d395e3b689626681deb"
 
 [sdist]
-path = "dist/mathematics_rl-0.1.0.tar.gz"
-size = 314998
-sha256 = "f0da7dbbacb36076b6cee125ee4d9795f021201ed8c98c7c79e766dec933027e"
+path = "dist/mathematics_rl-0.2.0.tar.gz"
+size = 485889
+sha256 = "14871a0db44ebc05da7d8bfa2f2cf20c997e88078a89f49b33ba55ef9b5cb5d1"
 
 [release]
-manifest = "dist/hf-release-0.1.0/manifest.json"
-files = 25
-sha256 = "785e41f322b0a9fadea2334b6152093f43d95e567884d8eb1dbcfe748329a617"
+manifest = "dist/hf-release-0.2.0/manifest.json"
+files = 44
+bytes = 1888852
+sha256 = "6465f9e60068728a527f68dc1dd428209f0d1072d8e79b235f4bc19d23576d54"
+retained_parquet_files = 33
+data_operations = "none"

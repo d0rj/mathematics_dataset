@@ -230,3 +230,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 graphify-out/
+
+# Versioned OpenEnv launch configuration (not generated episode data).
+!environments/mathematics_rl/integrations/openenv/config.example.json

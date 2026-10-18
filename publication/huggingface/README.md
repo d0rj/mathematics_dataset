@@ -38,14 +38,22 @@ tags:
 - reasoning
 - rl-environment
 - verifiers
+- harbor
+- openenv
+- nemo-gym
+- agentenv
 ---
 
-# Mathematical Reasoning Dataset and Verifiers v1 Environment
+# Mathematical Reasoning Dataset and RL Environments
 
 A bilingual synthetic school-level mathematics dataset, with an executable
 single-turn RL/evaluation environment for all **70 modules**. The four-column
 Parquet data remains usable with `datasets`; the environment package lives in
-[`rl/`](rl) and uses the Verifiers v1 API from pinned `verifiers==0.4.0`.
+[`rl/`](rl). Adapters support **Verifiers v1, Harbor, OpenEnv, NeMo Gym and
+AgentEnv** through a shared checker and bounded task selections. See
+[framework installation and launch commands](rl/FRAMEWORKS.md); these tags do not
+imply that Hugging Face hosts a running server or that the whole corpus was
+exported into each framework's task format.
 
 ## Data
 
@@ -96,7 +104,7 @@ requires POSIX `fcntl`. The standalone checker can also run on Windows.
 uvx --from huggingface-hub hf download d0rj/mathematics_dataset \
   --repo-type dataset --include 'rl/**' --local-dir mathematics-env
 cd mathematics-env/rl
-uv sync --locked
+uv sync --locked --extra verifiers
 uv run mathematics-rl catalog
 ```
 
@@ -110,7 +118,7 @@ Point the environment at an OpenAI-compatible model endpoint, with its credentia
 configured locally in `LOCAL_LLM_API_KEY` when required:
 
 ```bash
-uv run vf-eval mathematics-rl \
+uv run --extra verifiers vf-eval mathematics-rl \
   --env.taskset.language ru --env.taskset.mode interpolate \
   --env.taskset.modules '["arithmetic__add_or_sub"]' \
   --model YOUR_MODEL --client.base-url http://127.0.0.1:8000/v1 \

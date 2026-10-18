@@ -19,6 +19,8 @@ TOP_LEVEL = (
     "GRADING.md",
     "MODULES.md",
     "VALIDATION.md",
+    "FRAMEWORKS.md",
+    ".dockerignore",
 )
 
 
@@ -35,6 +37,10 @@ def sources():
         "tests/test_*.py",
         "tests/fixtures/*.ndjson",
         "tests/fixtures/*.toml",
+        "integrations/**/*.py",
+        "integrations/**/*.yaml",
+        "integrations/**/*.json",
+        "integrations/**/Dockerfile",
     ):
         for path in sorted(PACKAGE.glob(pattern)):
             yield path, f"rl/{path.relative_to(PACKAGE).as_posix()}"
@@ -66,7 +72,7 @@ def prepare(output):
         "repo_id": REPOSITORY,
         "repo_type": "dataset",
         "base_revision": BASE_REVISION,
-        "package_version": "0.1.0",
+        "package_version": "0.2.0",
         "files": files,
         "retained_parquet_files": 33,
         "data_operations": "none; README and rl/ additions only",
@@ -80,7 +86,7 @@ def prepare(output):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--output", type=Path, default=ROOT / "dist" / "hf-release-0.1.0"
+        "--output", type=Path, default=ROOT / "dist" / "hf-release-0.2.0"
     )
     args = parser.parse_args()
     manifest = prepare(args.output)

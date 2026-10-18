@@ -10,15 +10,18 @@ The reviewed card is [huggingface/README.md](huggingface/README.md). Existing
 Run from the source repository root:
 
 ```bash
-uv run --project environments/mathematics_rl pytest environments/mathematics_rl/tests -q
+uv run --project environments/mathematics_rl --extra verifiers pytest environments/mathematics_rl/tests -q
 uv build environments/mathematics_rl
 uv run --project environments/mathematics_rl python scripts/prepare_hf_release.py
-uv run --project environments/mathematics_rl python scripts/publish_hf_release.py dist/hf-release-0.1.0/manifest.json
+uv run --project environments/mathematics_rl python scripts/publish_hf_release.py dist/hf-release-0.2.0/manifest.json
 ```
 
 The last command is a **dry run**: it validates hashes and prints the exact add/replace
 allowlist. The release directory must be new; preparation refuses to overwrite it.
-It includes only the dataset README and `rl/` package, lock, docs, tests and fixtures.
+It includes only the dataset README and `rl/` package, lock, docs, tests, fixtures
+and framework integration manifests. Version 0.2.0 adds Harbor, OpenEnv, NeMo Gym
+and Scale AI AgentEnv; install extras in separate environments as described in
+`rl/FRAMEWORKS.md`. The Verifiers extra must now be explicitly selected.
 No original Parquet data, credentials, caches, virtual environments, outputs or
 local training artifacts enter the release. `manifest.json` is a local control file.
 
@@ -28,7 +31,7 @@ After explicit publication authorization, authenticate locally with `hf auth log
 or a locally configured `HF_TOKEN`. Then run the same command with `--publish`:
 
 ```bash
-uv run --project environments/mathematics_rl python scripts/publish_hf_release.py dist/hf-release-0.1.0/manifest.json --publish
+uv run --project environments/mathematics_rl python scripts/publish_hf_release.py dist/hf-release-0.2.0/manifest.json --publish
 ```
 
 It creates one commit with `parent_commit` protection and **no delete operations**.

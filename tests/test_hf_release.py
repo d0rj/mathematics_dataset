@@ -33,7 +33,15 @@ def test_corrected_card_preserves_data_contract():
         {"split": "ru", "path": "data/ru-*"},
         {"split": "en", "path": "data/en-*"},
     ]
-    assert {"rl-environment", "verifiers", "mathematics"} <= set(metadata["tags"])
+    assert {
+        "rl-environment",
+        "verifiers",
+        "mathematics",
+        "harbor",
+        "openenv",
+        "nemo-gym",
+        "agentenv",
+    } <= set(metadata["tags"])
     assert "your-username" not in text and "--per_train_module=1000000" not in text
     assert metadata["license"] == "apache-2.0"
 
@@ -47,6 +55,9 @@ def test_release_allowlist_hashes_and_non_overwrite(tmp_path):
     assert manifest == prepared
     paths = [path for path, _ in selected]
     assert "README.md" in paths and "rl/uv.lock" in paths
+    assert "rl/FRAMEWORKS.md" in paths
+    assert "rl/integrations/openenv/Dockerfile" in paths
+    assert "rl/src/mathematics_rl/adapters/agentenv.py" in paths
     assert all(path == "README.md" or path.startswith("rl/") for path in paths)
     assert not any(
         "data/" in path or ".venv" in path or "__pycache__" in path for path in paths

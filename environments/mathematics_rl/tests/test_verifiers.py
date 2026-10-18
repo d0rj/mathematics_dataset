@@ -1,4 +1,5 @@
 """Exercise the actual installed v1 plugin loader, Trace and Task.score on POSIX."""
+# ruff: noqa: E402
 
 import json
 import sys
@@ -11,7 +12,7 @@ if sys.platform == "win32":
         "Verifiers 0.4 imports POSIX fcntl; run integration tests in WSL", allow_module_level=True
     )
 
-import verifiers.v1 as vf
+vf = pytest.importorskip("verifiers.v1", reason="Install the verifiers extra in a separate venv")
 from verifiers.v1.utils.loaders import environment_class, taskset_class
 
 from mathematics_rl import MathematicsEnv, MathematicsTaskset

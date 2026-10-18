@@ -1,0 +1,8 @@
+# Overlay for a Gym checkout containing resources_servers/mathematics/app.py.
+# Install this package with its nemo extra in that resource server's environment.
+mathematics:
+  resources_servers:
+    mathematics:
+      entrypoint: app.py
+      domain: math
+      grading_timeout: 3.0

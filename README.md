@@ -3,10 +3,13 @@
 ## Reinforcement learning environment
 
 The [Mathematics RL package](environments/mathematics_rl/README.md) implements the
-Verifiers v1 API for all 70 English/Russian modules, with typed exact rewards,
+Verifiers v1, Harbor, OpenEnv, NeMo Gym and AgentEnv interfaces for all 70
+English/Russian modules, with typed exact rewards,
 bounded symbolic parsing, train/eval separation and regression tests.
 Dependencies are isolated from this original generator. The corrected Hub card
 and publication workflow live in [publication](publication/README.md).
+See [framework setup](environments/mathematics_rl/FRAMEWORKS.md) for pinned versions
+and runtime-specific launch commands.
 
 This dataset code generates mathematical question and answer pairs, from a range
 of question types at roughly school-level difficulty. This is designed to test

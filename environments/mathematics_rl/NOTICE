@@ -14,3 +14,6 @@ Russian generator: this translated checkout, base commit
 e97cd83e190163e025dd831886f05460a11c1bc8.
 
 Verifiers is a separate MIT-licensed dependency and is not vendored here.
+Harbor, OpenEnv, NeMo Gym and AgentEnv are separately installed optional
+dependencies. Their SDK sources are not vendored in this package; the adapters
+implement their public task, environment and verification interfaces.

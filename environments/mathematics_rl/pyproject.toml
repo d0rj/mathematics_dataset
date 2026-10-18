@@ -4,25 +4,54 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mathematics-rl"
-version = "0.1.0"
-description = "Bilingual DeepMind Mathematics Dataset taskset for Verifiers v1"
+version = "0.2.0"
+description = "Bilingual mathematics RL environments for Verifiers, Harbor, OpenEnv, NeMo Gym and AgentEnv"
 readme = "README.md"
-requires-python = ">=3.11,<3.15"
+requires-python = ">=3.11.4,<3.15"
 license = "Apache-2.0"
 dependencies = [
   "datasets==5.0.0",
   "sympy==1.14.0",
-  "verifiers==0.4.0",
 ]
 
 [project.scripts]
 mathematics-rl = "mathematics_rl.cli:main"
+mathematics-openenv = "mathematics_rl.adapters.openenv:main"
+mathematics-nemo = "mathematics_rl.adapters.nemo:main"
+
+[project.optional-dependencies]
+verifiers = ["verifiers==0.4.0"]
+harbor = ["harbor==0.24.0; python_version >= '3.12'"]
+openenv = ["openenv==0.9.0"]
+nemo = ["nemo-gym==0.7.0; python_full_version >= '3.13.14' and sys_platform == 'linux'"]
+agentenv = ["agentenv-framework==0.9.1334"]
+
+[project.entry-points."agent_env.task_steps"]
+mathematics_grade = "mathematics_rl.adapters.agentenv:MathematicsGradeStep"
 
 [dependency-groups]
 dev = ["pytest>=8.3,<10", "pytest-asyncio>=1,<2", "build>=1.2,<2", "ruff>=0.14,<1"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/mathematics_rl"]
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+  "src", "tests", "integrations", "pyproject.toml", "uv.lock", "README.md",
+  "FRAMEWORKS.md", "GRADING.md", "MODULES.md", "VALIDATION.md", "LICENSE", "NOTICE",
+  ".dockerignore",
+]
+
+[tool.hatch.build.targets.sdist.force-include]
+"integrations/openenv/config.example.json" = "integrations/openenv/config.example.json"
+
+[tool.uv]
+conflicts = [
+  [{extra = "verifiers"}, {extra = "agentenv"}],
+  [{extra = "verifiers"}, {extra = "nemo"}],
+  [{extra = "verifiers"}, {extra = "openenv"}],
+  [{extra = "verifiers"}, {extra = "harbor"}],
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -31,7 +60,7 @@ asyncio_mode = "auto"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-extend-exclude = [".venv-wsl"]
+extend-exclude = [".venv-*"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

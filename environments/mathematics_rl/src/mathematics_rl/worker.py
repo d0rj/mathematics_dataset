@@ -14,7 +14,7 @@ from .grading import MAX_COMPLETION, Grade
 def worker_command():
     # A module entrypoint avoids multiprocessing.spawn re-importing a heavyweight
     # vf-eval / trainer __main__ inside every mathematical checker process.
-    return [sys.executable, "-u", "-m", "mathematics_rl.worker_entry"]
+    return [sys.executable, "-X", "utf8", "-u", "-m", "mathematics_rl.worker_entry"]
 
 
 def _read(process, replies):

@@ -19,7 +19,16 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python }}
-      - run: uv sync --project environments/mathematics_rl --locked
-      - run: uv run --project environments/mathematics_rl ruff check environments/mathematics_rl scripts tests/test_hf_release.py
-      - run: uv run --project environments/mathematics_rl pytest environments/mathematics_rl/tests tests/test_hf_release.py -q
+      - run: uv sync --project environments/mathematics_rl --locked --extra verifiers
+      - run: uv run --project environments/mathematics_rl --extra verifiers ruff check environments/mathematics_rl scripts tests/test_hf_release.py
+      - run: uv run --project environments/mathematics_rl --extra verifiers pytest environments/mathematics_rl/tests tests/test_hf_release.py -q
       - run: uv build environments/mathematics_rl
+  adapters:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13.14"
+      - run: uv sync --project environments/mathematics_rl --locked --extra harbor --extra openenv --extra agentenv --extra nemo
+      - run: uv run --project environments/mathematics_rl --extra harbor --extra openenv --extra agentenv --extra nemo pytest environments/mathematics_rl/tests tests/test_hf_release.py -q

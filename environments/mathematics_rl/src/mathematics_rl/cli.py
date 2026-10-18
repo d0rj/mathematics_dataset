@@ -41,6 +41,24 @@ def main():
     )
     audit.add_argument("--require-all-modules", action="store_true")
     audit.add_argument("--output", type=Path)
+    export = subcommands.add_parser("export", help="Export a bounded selection for a framework")
+    export.add_argument("framework", choices=("harbor", "agentenv", "nemo"))
+    export.add_argument("--output", type=Path, required=True)
+    export.add_argument("--source")
+    export.add_argument("--language", choices=("en", "ru"), default="ru")
+    export.add_argument(
+        "--mode", choices=("train", "interpolate", "extrapolate", "all"), default="interpolate"
+    )
+    export.add_argument("--module", action="append", dest="modules", choices=MODULES, default=[])
+    export.add_argument("--category", action="append", dest="categories", default=[])
+    export.add_argument("--limit", type=int, default=100)
+    export.add_argument("--revision", default=REVISION)
+    export.add_argument("--seed", type=int, default=42)
+    export.add_argument("--shuffle-buffer", type=int, default=0)
+    export.add_argument(
+        "--agent-id", help="AgentEnv deployed agent store ID (optional for episodes)"
+    )
+    export.add_argument("--model", help="AgentEnv model identifier")
     args = parser.parse_args()
     if args.command == "catalog":
         print(
@@ -56,6 +74,44 @@ def main():
         print(json.dumps(asdict(result), ensure_ascii=False, indent=2))
         if result.status == "invalid_reference":
             sys.exit(2)
+        return
+    if args.command == "export":
+        import importlib
+
+        from .adapters.common import select_tasks
+
+        rows = select_tasks(
+            **{
+                key: getattr(args, key)
+                for key in (
+                    "source",
+                    "language",
+                    "mode",
+                    "modules",
+                    "categories",
+                    "limit",
+                    "revision",
+                    "seed",
+                    "shuffle_buffer",
+                )
+            }
+        )
+        adapter = importlib.import_module(f"mathematics_rl.adapters.{args.framework}")
+        options = (
+            {"agent_id": args.agent_id, "model": args.model} if args.framework == "agentenv" else {}
+        )
+        result = adapter.export_tasks(rows, args.output, **options)
+        print(
+            json.dumps(
+                {
+                    "framework": args.framework,
+                    "tasks": len(rows),
+                    "output": str(args.output),
+                    "manifest_entries": len(result),
+                },
+                ensure_ascii=False,
+            )
+        )
         return
     if args.limit < 0:
         parser.error("--limit must be nonnegative")

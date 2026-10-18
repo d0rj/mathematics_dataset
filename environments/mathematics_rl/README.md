@@ -1,10 +1,15 @@
 # Mathematics RL
 
-A Verifiers **v1 API** environment for all **70 modules** of
+A mathematics RL environment for **Verifiers v1, Harbor, OpenEnv, NeMo Gym and
+AgentEnv**, covering all **70 modules** of
 [`d0rj/mathematics_dataset`](https://huggingface.co/datasets/d0rj/mathematics_dataset).
-The API is provided by the pinned `verifiers==0.4.0` package. Each episode is one
+The Verifiers API is provided by pinned `verifiers==0.4.0`. Each episode is one
 tool-less model response followed by a deterministic exact typed reward in `{0, 1}`.
 English and Russian use the same scoring rules and separate language splits.
+See [FRAMEWORKS.md](FRAMEWORKS.md) for the four additional adapters, pinned SDK
+versions, bounded exports, native servers/clients and AgentEnv episode loops.
+Install each framework in a separate environment: Verifiers' MCP major version
+conflicts with the other SDKs. The base package contains only the checker/loader.
 
 ## Installation
 
@@ -16,7 +21,7 @@ imports `fcntl`. The standalone checker and its unit tests also work on Windows.
 Scoring needs no GPU, Docker, hosted sandbox or paid service.
 
 ```bash
-uv sync --locked
+uv sync --locked --extra verifiers
 uv run mathematics-rl catalog
 uv run mathematics-rl grade \
   --module arithmetic__div --question 'Divide 1 by 2.' --reference 1/2 --answer '0.5'
@@ -37,7 +42,7 @@ the environment variable named by `--client.api-key-var`. Do not place credentia
 in commands, TOML files, dataset cards or traces. Local endpoints may accept `EMPTY`.
 
 ```bash
-uv run vf-eval mathematics-rl \
+uv run --extra verifiers vf-eval mathematics-rl \
   --env.taskset.language ru --env.taskset.mode interpolate \
   --env.taskset.modules '["arithmetic__add_or_sub"]' \
   --model YOUR_MODEL --client.base-url http://127.0.0.1:8000/v1 \
@@ -65,7 +70,7 @@ for small pilots; the existing 125M rows do not need to be rewritten.
 framework's exact shuffle materializes its input. Bound it first:
 
 ```bash
-uv run vf-eval mathematics-rl \
+uv run --extra verifiers vf-eval mathematics-rl \
   --env.taskset.language en --select.include.idx 0:1000 -s -n 20 \
   --model YOUR_MODEL --client.base-url http://127.0.0.1:8000/v1 --no-push
 ```

@@ -1,0 +1,7 @@
+{
+  "source": "tests/fixtures/generated_en.ndjson",
+  "language": "en",
+  "mode": "interpolate",
+  "modules": ["arithmetic__add_or_sub"],
+  "limit": 2
+}
