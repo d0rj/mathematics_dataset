@@ -1,5 +1,12 @@
 # Hugging Face publication
 
+Version **0.2.0 was published on 2026-10-19**:
+[HF commit 0d8f2b5](https://huggingface.co/datasets/d0rj/mathematics_dataset/commit/0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a).
+All 44 release files were downloaded and matched to their manifest hashes;
+all 33 original Parquet objects are unchanged. The API confirms `rl-environment`
+and all five framework tags, and returns the repository through the
+`rl-environment` dataset filter. See `validation.toml` for recorded evidence.
+
 Target: `d0rj/mathematics_dataset`, expected parent
 `d9f78d0665b3a13dad21c6830b9b358c8a25ae74`.
 The reviewed card is [huggingface/README.md](huggingface/README.md). Existing
@@ -50,4 +57,5 @@ shown in the card. A published tag or successful upload alone does not prove exe
 - Remove the unverified Russian generation command instead of inventing historical provenance.
 - Describe the eight actual module families; remove the unsupported geometry claim.
 - Document grading, supported modules, execution platform, pinned revision and evidence limits.
-- Add `rl-environment` and `verifiers` compatibility tags with an actual runnable package.
+- Add `rl-environment`, `verifiers`, `harbor`, `openenv`, `nemo-gym` and `agentenv`
+  compatibility tags with the executable package and native adapters.

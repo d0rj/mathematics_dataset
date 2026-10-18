@@ -18,7 +18,7 @@ real_model_benchmark = false
 training_run = false
 gpu_used = false
 hosted_ci_run = false
-hf_published = false
+hf_published = true
 harbor_docker_trial_run = false
 harbor_sdk_task_loading_verified = true
 openenv_real_client_transport_verified = true
@@ -42,3 +42,17 @@ bytes = 1888852
 sha256 = "6465f9e60068728a527f68dc1dd428209f0d1072d8e79b235f4bc19d23576d54"
 retained_parquet_files = 33
 data_operations = "none"
+
+[hub_publication]
+commit = "0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a"
+url = "https://huggingface.co/datasets/d0rj/mathematics_dataset/commit/0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a"
+files_downloaded_and_sha256_verified = 44
+retained_parquet_objects_unchanged = 33
+rl_environment_tag_verified = true
+rl_environment_filter_listing_verified = true
+framework_tags_verified = ["verifiers", "harbor", "openenv", "nemo-gym", "agentenv"]
+published_package_fresh_install_verified = true
+published_package_checker_verified = true
+published_package_verifiers_plugins_verified = true
+published_package_module_count = 70
+published_package_smoke_python = "3.11.15"

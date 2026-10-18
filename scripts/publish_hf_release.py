@@ -85,7 +85,9 @@ def main():
             CommitOperationAdd(path_in_repo=target, path_or_fileobj=str(source))
             for target, source in selected
         ],
-        commit_message="Add complete Verifiers v1 mathematics environment and correct dataset card",
+        commit_message=(
+            f"Publish mathematics RL {manifest['package_version']} with five framework adapters"
+        ),
     )
     print(result.commit_url)
 
