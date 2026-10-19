@@ -1,6 +1,8 @@
 """Shared episode and artifact boundaries, independent of optional framework SDKs."""
 
+import hashlib
 import json
+import tarfile
 from dataclasses import replace
 from pathlib import Path
 
@@ -80,14 +82,27 @@ def test_harbor_export_and_artifact_verification(tmp_path, all_module_examples):
     output = tmp_path / "harbor"
     manifest = export_tasks([task], output)
     root = output / manifest[0]["directory"]
+    for script in (root / "solution/solve.sh", root / "tests/test.sh"):
+        assert b"\r" not in script.read_bytes(), "Linux executable exports must use LF on Windows"
     with pytest.raises(FileExistsError):
         export_tasks([task], output)
     assert "separate" in (root / "task.toml").read_text()
+    assert "network_mode: none" in (root / "tests/docker-compose.yaml").read_text()
     assert "reference" not in (root / "environment/Dockerfile").read_text()
     assert not list((root / "environment").glob("*.json"))
     answer = tmp_path / "answer.txt"
     logs = tmp_path / "logs"
     reference = root / "tests/reference.json"
+    reference_sha = hashlib.sha256(reference.read_bytes()).hexdigest()
+    verifier_image = (root / "tests/Dockerfile").read_text()
+    assert f'mathematics.rl.reference.sha256="{reference_sha}"' in verifier_image
+    assert f"{reference_sha}  /tests/reference.json" in verifier_image
+    archive = next((root / "tests").glob("payload-*.tar"))
+    assert archive.stem == "payload-" + hashlib.sha256(archive.read_bytes()).hexdigest()
+    assert f"ADD {archive.name} /tests/" in verifier_image
+    with tarfile.open(archive) as payload:
+        assert payload.extractfile("reference.json").read() == reference.read_bytes()
+        assert payload.extractfile("test.sh").read() == (root / "tests/test.sh").read_bytes()
     assert verify_task(reference, answer, logs) == 0
     answer.write_text(task.answer, encoding="utf-8")
     assert verify_task(reference, answer, logs) == 1
@@ -97,3 +112,18 @@ def test_harbor_export_and_artifact_verification(tmp_path, all_module_examples):
     answer.write_bytes(b"\xff")
     assert verify_task(reference, answer, logs) == 0
     assert json.loads((logs / "grading.json").read_text())["status"] == "invalid_artifact"
+
+
+def test_harbor_source_errors_never_leave_a_model_reward(tmp_path, all_module_examples):
+    task = replace(all_module_examples[0], answer="invalid reference")
+    output = tmp_path / "export"
+    manifest = export_tasks([task], output)
+    reference = output / manifest[0]["directory"] / "tests/reference.json"
+    logs = tmp_path / "logs"
+    logs.mkdir()
+    reward = logs / "reward.txt"
+    reward.write_text("1\n")
+    # Missing model output must not hide an invalid source reference either.
+    with pytest.raises(ValueError, match="source"):
+        verify_task(reference, tmp_path / "missing-answer.txt", logs)
+    assert not reward.exists()

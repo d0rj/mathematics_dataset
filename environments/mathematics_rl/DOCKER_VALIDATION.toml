@@ -1,0 +1,134 @@
+date = 2026-10-19
+package_version = "0.2.1"
+status = "passed"
+modules = 70
+languages = ["en", "ru"]
+fixtures = 1434
+model_responses = "scripted/oracle"
+training_run = false
+gpu_used = false
+real_model_benchmark = false
+hosted_ci_run = false
+verified_source_scope = "shared runtime plus each exercised framework adapter"
+
+[runtime]
+python = "3.13.14"
+uv = "0.11.23"
+docker_engine = "29.7.2"
+docker_cli = "29.7.2"
+docker_desktop = "4.89.0 (238018)"
+platform = "linux/amd64"
+python_base = "python:3.13.14-slim@sha256:9662417aace5ae7b8e2609cce472b72a8958e134ba372808abe9cc1a0c0125e6"
+docker_cli_base = "docker:29.7.2-cli@sha256:3f4743208d2338c934d7b8bcfbe1bb54c0b2355c510ad5e0f31c0c4a54bd704e"
+
+[windows_regression]
+python = "3.13.13"
+passed = 1506
+skipped_sdk_modules = 5
+includes_source_publication_tests = 7
+
+[frameworks.verifiers]
+sdk = "0.4.0"
+passed = true
+image_id = "sha256:4aae609e6aebf86960e0ada14e50f9e46d47b3ff8d98a737cd5855c5ab38ca53"
+unit_passed = 1641
+unit_skipped_sdk_modules = 4
+unit_errors = 0
+unit_failures = 0
+module_language_pairs = 140
+relevant_source_hashes_verified = true
+native_task_score_cases = 140
+vf_eval_scripted_episodes = 6
+
+[frameworks.harbor]
+sdk = "0.24.0"
+passed = true
+image_id = "sha256:0e52b73c8aee3032b12a1b76af75716d9ac77f274aae84273592fe6aeb572436"
+unit_passed = 1500
+unit_skipped_sdk_modules = 4
+unit_errors = 0
+unit_failures = 0
+module_language_pairs = 140
+relevant_source_hashes_verified = true
+oracle_episodes = 140
+incorrect_episodes = 24
+negative_answer_kinds = 12
+separate_verifier = true
+agent_cannot_read_verifier_paths = true
+verifier_ipv4_routes = 0
+invalid_source_expected_errors = 1
+source_error_leaves_no_reward = true
+missing_output_episodes = 1
+missing_output_reward = 0
+private_payload = "content-addressed deterministic tar"
+native_payload_identity_checked = true
+
+[frameworks.openenv]
+sdk = "0.9.0"
+passed = true
+image_id = "sha256:35bd6d5af450a823df37d046d8001ce74b52c9948820efbf66a47a5afad71a09"
+unit_passed = 1502
+unit_skipped_sdk_modules = 4
+unit_errors = 0
+unit_failures = 0
+module_language_pairs = 140
+relevant_source_hashes_verified = true
+correct_submissions = 140
+incorrect_submissions = 140
+production_server_image_id = "sha256:ca6aabbb2e8fb8da16e8626af97366612fe425619a6d31d0cfc2365e78f26d20"
+native_cross_container_client = true
+
+[frameworks.nemo]
+sdk = "0.7.0"
+passed = true
+image_id = "sha256:2b9744ccda3edeb1040a5b9e0f598be0995a0c29d5ee752a3687c489d40a7b30"
+unit_passed = 1501
+unit_skipped_sdk_modules = 4
+unit_errors = 0
+unit_failures = 0
+module_language_pairs = 140
+relevant_source_hashes_verified = true
+correct_submissions = 140
+incorrect_submissions = 140
+supervisor_entrypoint_submissions = 280
+native_cross_container_http = true
+
+[frameworks.agentenv]
+sdk = "0.9.1334"
+passed = true
+image_id = "sha256:48e7070d8491b13f2851edd5e33dba9d260c2b2cfa01c2b3d490605f4e789a85"
+unit_passed = 1504
+unit_skipped_sdk_modules = 4
+unit_errors = 0
+unit_failures = 0
+module_language_pairs = 140
+relevant_source_hashes_verified = true
+correct_submissions = 140
+incorrect_submissions = 140
+
+[reports.run_1]
+path = ".cache/docker-release-protocols-021/report.json"
+run_id = "math-rl-9016b81692"
+sha256 = "ff73021e9ea5cdc6d7c348797516e642ca5843123a3724860b3c9ad2cb196284"
+
+[reports.run_2]
+path = ".cache/docker-release-harbor-021/report.json"
+run_id = "math-rl-4d94c6358e"
+sha256 = "9c55f312587d1eded901c355ec42797651aa130b243789479479685d775dea31"
+
+[release_source_python_sha256]
+"src/mathematics_rl/__init__.py" = "6e9f28df95bc7145360ea46ac61d97c3cbbd3b3584e769077c125268574d7e1d"
+"src/mathematics_rl/adapters/__init__.py" = "21029b465221f433a0c39cad0e613b30da4d6a8aaac2a6e35304f6675d47d898"
+"src/mathematics_rl/adapters/agentenv.py" = "8cea8a64066fea29048aced1269ee1e819b188abca1557dc6b7e26744b2f4ec9"
+"src/mathematics_rl/adapters/common.py" = "fb41ffb507dd6fe31370e6f3e96df1b25b540dd0203d1601207ad96ceac086db"
+"src/mathematics_rl/adapters/harbor.py" = "b7114340963622441d8dda339152c342596bcd287a026606c8b6c5c2fbda842e"
+"src/mathematics_rl/adapters/nemo.py" = "b3fb4c6e6dce2479d5676b6cb114a4f16db0599a3dea5d20c1382ef66397aaf5"
+"src/mathematics_rl/adapters/openenv.py" = "442e275810ed8de6b8eacb78aa5026f6b57ec1612e94aa127f26e38f45548356"
+"src/mathematics_rl/catalog.py" = "7f22e1fa95e818c08b8b605e632c954c3a10dc64b3a67a12d05c52a84fe39745"
+"src/mathematics_rl/cli.py" = "b0d5b9565a53a947e60e01959680e8a34a6c2ff3510038bb92c1eab28ae82605"
+"src/mathematics_rl/data.py" = "e3487755958973e903f4c33f87bec45d15f67edf3d51ffd3f3ae46e7215fbcc6"
+"src/mathematics_rl/grading.py" = "ee1bd0a0b48832833ea1d13497024109f33ee5a3b759d87443d618bf56d64d6e"
+"src/mathematics_rl/parsing.py" = "2d1bdfc68e3ca206422c4f45d076b5efe976d35898d4aefb206f7c44e6444699"
+"src/mathematics_rl/taskset.py" = "1a5080cf4f344907c3103bbfd75df7fe3a9431b8b7587a17d4f3f18a551d0c2a"
+"src/mathematics_rl/worker.py" = "0f96d77d294ab99f5f8cce114114e115143eb59e9ae6e55946e64d6e726a4fac"
+"src/mathematics_rl/worker_entry.py" = "ef046fe8285b4d903b79f6b02ee4f5e525ac0e6c412cea8d2ae1c785e4c44839"

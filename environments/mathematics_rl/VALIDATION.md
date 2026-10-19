@@ -3,6 +3,51 @@
 Implementation and checks: 2026-10-18/19. Source data revision:
 `d9f78d0665b3a13dad21c6830b9b358c8a25ae74`.
 
+## Version 0.2.1: local Docker execution
+
+The Docker runner builds separate SDK images on Docker Desktop 4.89.0,
+Engine/CLI 29.7.2, Linux amd64, Python 3.13.14. The measured image IDs,
+checksums and protocol results are recorded in [DOCKER_VALIDATION.toml](DOCKER_VALIDATION.toml).
+Run it using [DOCKER.md](DOCKER.md).
+
+| Pinned SDK in its own container | Package tests passed | Other SDK modules skipped |
+| --- | ---: | ---: |
+| Verifiers 0.4.0 | 1,641 | 4 |
+| Harbor 0.24.0 | 1,500 | 4 |
+| OpenEnv 0.9.0 | 1,502 | 4 |
+| NeMo Gym 0.7.0 | 1,501 | 4 |
+| AgentEnv 0.9.1334 | 1,504 | 4 |
+
+Windows Python 3.13.13 separately passes 1,506 tests, with five optional SDK
+modules skipped; this includes the seven source-repository publication checks.
+The package suites include all 1,434 mathematical fixtures.
+
+OpenEnv's actual production image and native cross-container client cover
+280 submissions across all 70 modules in both languages. NeMo Gym covers the
+same 280 submissions both through the standalone launcher and through the
+entrypoint receiving native supervisor configuration. AgentEnv completes 280
+native episode/turn/result cycles with local stores. Verifiers covers native
+`Task.score` for all 140 module/language pairs and six actual `vf-eval` episodes
+against the local scripted endpoint.
+
+Native Harbor trials exercise artifact collection and separate agent/verifier
+containers, oracle reference acceptance for all 140 module/language pairs,
+incorrect answers covering all 12 answer kinds in each language, a source error
+with no model reward, and missing output earning zero. The trials assert
+private reference/checker paths are absent from the agent and that the verifier
+has no IPv4 routes.
+
+Container execution found and corrected Windows CRLF shell exports, the
+Docker Desktop kernel incompatibility of Harbor's egress sidecar policy,
+invalid-source errors leaving a misleading reward, and mixed verifier build
+payloads during parallel Compose/BuildKit execution. Content-addressed tar
+snapshots and reference checksums now bind each verifier to its task's files.
+The OpenEnv production image also uses the checked lockfile and pinned base.
+
+All supplied model answers are scripted or oracle answers. No model training,
+GPU use, hosted CI run or real-model quality benchmark is claimed. The older
+Docker limitation below describes version 0.2.0 and is resolved in this release.
+
 ## Scope
 
 - 1,434 generated fixtures: 717 EN and 717 RU. Each language covers all 70 modules,
@@ -36,7 +81,7 @@ publication report and generated release manifest. CI is configured for
 Ubuntu Python 3.11/3.13 and Windows Python 3.13; configuring CI is not evidence that
 hosted CI has executed.
 
-## Version 0.2.0: additional frameworks
+## Version 0.2.0: historical SDK checks
 
 Checked on 2026-10-19 with actual installed SDKs, using the shared checker and
 the unchanged EN/RU regression fixtures:
@@ -50,7 +95,7 @@ the unchanged EN/RU regression fixtures:
 - Harbor 0.24.0's real `Task` loader validates exported task directories for all
   140 module/language pairs. Artifact checking covers correct, incorrect, missing
   and non-UTF-8 files. `environment_mode=separate` isolates references/checker code
-  from the shell agent. **No Docker trial or image build was completed**: the
+  from the shell agent. **Version 0.2.0 had no completed Docker trial or image build**: the
   installed Docker Desktop daemon was unavailable (`dockerDesktopLinuxEngine`
   pipe missing), including after its normal start command. Run the documented
   `harbor run --agent oracle` once a Docker daemon is available.
@@ -101,5 +146,6 @@ for RL. The environment itself uses modern dependencies pinned in `uv.lock`.
 These fixtures are engineering regression data, not held-out model benchmarks.
 Accepting an official generator's answer does not independently validate its math.
 The full 125,409,832-row corpus has not been audited, deduplicated or used for an
-RL experiment here. The release preparation changes only the card and adds `rl/`;
-it neither rewrites Parquet nor performs a hosted publication.
+RL experiment here. Release preparation changes only the card and `rl/`;
+it neither rewrites Parquet nor uploads files itself. The source repository's
+publication report records the actual Hub commit and post-upload verification.

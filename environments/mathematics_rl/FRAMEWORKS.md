@@ -55,8 +55,13 @@ contains `task.toml` schema 1.4, `instruction.md`, the agent environment,
 container**; references and checker code are present only there. Missing, oversized,
 non-UTF-8 or non-regular answer files earn zero. Checker source is bundled with
 the task; the verifier image installs pinned SymPy. Image build needs internet.
-The base `python:3.13-slim` image is a mutable tag; archive the built image/digest
-when reproducing an experiment. Do not switch to shared verification for an
+Python 3.13.14 is pinned by its image manifest digest in the exporter.
+`tests/docker-compose.yaml` disables verifier networking with `network_mode: none`,
+including on Docker Desktop kernels without nftables FIB support. Exports use LF
+on Windows too. Invalid source references leave no reward file and fail the trial.
+The private checker/reference snapshot uses a content-addressed tar filename and
+a build-time reference checksum, protecting parallel task builds from mixed files.
+Do not switch to shared verification for an
 untrusted shell agent: it could read references or alter the checker.
 
 ## OpenEnv
@@ -92,7 +97,7 @@ after termination is rejected. Native `/schema`, `/health`, `/reset`, `/step`,
 
 `integrations/openenv/openenv.yaml`, `app.py` and `Dockerfile` are also provided.
 Build from this package root with
-`docker build -f integrations/openenv/Dockerfile -t mathematics-openenv:0.2.0 .`.
+`docker build -f integrations/openenv/Dockerfile -t mathematics-openenv:0.2.1 .`.
 This creates a runnable image, not a published Hugging Face Space.
 
 ## NeMo Gym
@@ -180,6 +185,10 @@ That path uses your configured sandbox/agent backend and may require Docker.
 The external-episode path above supplies model responses directly.
 
 ## Verification boundaries and sources
+
+Use [DOCKER.md](DOCKER.md) to reproduce all five integrations locally with isolated
+SDK images, native protocols and real Harbor sibling containers. The production
+OpenEnv Dockerfile installs from the same lockfile used by these checks.
 
 See [VALIDATION.md](VALIDATION.md) for measured checks and outstanding deployment
 boundaries. SDK/protocol tests and oracle trials do not measure a real model or

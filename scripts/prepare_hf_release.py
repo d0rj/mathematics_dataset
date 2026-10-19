@@ -4,12 +4,14 @@ import argparse
 import hashlib
 import json
 import shutil
+import tomllib
 from pathlib import Path
 
 REPOSITORY = "d0rj/mathematics_dataset"
-BASE_REVISION = "d9f78d0665b3a13dad21c6830b9b358c8a25ae74"
+BASE_REVISION = "0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a"
 ROOT = Path(__file__).absolute().parent.parent
 PACKAGE = ROOT / "environments" / "mathematics_rl"
+VERSION = tomllib.loads((PACKAGE / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
 TOP_LEVEL = (
     "pyproject.toml",
     "uv.lock",
@@ -21,6 +23,8 @@ TOP_LEVEL = (
     "VALIDATION.md",
     "FRAMEWORKS.md",
     ".dockerignore",
+    "DOCKER.md",
+    "DOCKER_VALIDATION.toml",
 )
 
 
@@ -72,7 +76,7 @@ def prepare(output):
         "repo_id": REPOSITORY,
         "repo_type": "dataset",
         "base_revision": BASE_REVISION,
-        "package_version": "0.2.0",
+        "package_version": VERSION,
         "files": files,
         "retained_parquet_files": 33,
         "data_operations": "none; README and rl/ additions only",
@@ -86,7 +90,7 @@ def prepare(output):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--output", type=Path, default=ROOT / "dist" / "hf-release-0.2.0"
+        "--output", type=Path, default=ROOT / "dist" / f"hf-release-{VERSION}"
     )
     args = parser.parse_args()
     manifest = prepare(args.output)

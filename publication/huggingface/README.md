@@ -152,6 +152,12 @@ and timeouts are recorded separately in traces.
 
 ## Verification and limitations
 
+Version **0.2.1** includes a reproducible local Docker check for all five framework
+integrations, using pinned SDKs, native clients/servers and actual Harbor agent
+and separate-verifier containers. See [Docker instructions](rl/DOCKER.md) and
+the [recorded container results](rl/DOCKER_VALIDATION.toml). The checks cover all
+70 modules in both languages with scripted answers; they do not measure model quality.
+
 Run the committed regression suite or bounded reference audit after installation:
 
 ```bash

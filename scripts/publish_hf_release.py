@@ -86,7 +86,7 @@ def main():
             for target, source in selected
         ],
         commit_message=(
-            f"Publish mathematics RL {manifest['package_version']} with five framework adapters"
+            f"Publish mathematics RL {manifest['package_version']}: Docker validation and adapter fixes"
         ),
     )
     print(result.commit_url)

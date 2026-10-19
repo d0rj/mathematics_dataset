@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mathematics-rl"
-version = "0.2.0"
+version = "0.2.1"
 description = "Bilingual mathematics RL environments for Verifiers, Harbor, OpenEnv, NeMo Gym and AgentEnv"
 readme = "README.md"
 requires-python = ">=3.11.4,<3.15"
@@ -39,7 +39,7 @@ packages = ["src/mathematics_rl"]
 only-include = [
   "src", "tests", "integrations", "pyproject.toml", "uv.lock", "README.md",
   "FRAMEWORKS.md", "GRADING.md", "MODULES.md", "VALIDATION.md", "LICENSE", "NOTICE",
-  ".dockerignore",
+  ".dockerignore", "DOCKER.md", "DOCKER_VALIDATION.toml",
 ]
 
 [tool.hatch.build.targets.sdist.force-include]

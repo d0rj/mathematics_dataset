@@ -56,6 +56,9 @@ def test_release_allowlist_hashes_and_non_overwrite(tmp_path):
     paths = [path for path, _ in selected]
     assert "README.md" in paths and "rl/uv.lock" in paths
     assert "rl/FRAMEWORKS.md" in paths
+    assert "rl/DOCKER.md" in paths and "rl/DOCKER_VALIDATION.toml" in paths
+    assert "rl/integrations/docker/run.py" in paths
+    assert "rl/integrations/docker/Dockerfile" in paths
     assert "rl/integrations/openenv/Dockerfile" in paths
     assert "rl/src/mathematics_rl/adapters/agentenv.py" in paths
     assert all(path == "README.md" or path.startswith("rl/") for path in paths)

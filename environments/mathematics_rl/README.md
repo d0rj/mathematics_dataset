@@ -115,6 +115,10 @@ Keep both evaluation categories out of the training mixture.
 
 ## Tests and publication
 
+To check every framework with its pinned SDK in local Linux containers, run
+`python integrations/docker/run.py --output /absolute/path/to/new-results`.
+See [DOCKER.md](DOCKER.md) for requirements, native protocol coverage and logs.
+
 ```bash
 uv run pytest tests -q
 uv run ruff check src tests

@@ -1,58 +1,48 @@
 date = 2026-10-19
-package_version = "0.2.0"
+package_version = "0.2.1"
 dataset_revision = "d9f78d0665b3a13dad21c6830b9b358c8a25ae74"
 modules = 70
 languages = 2
 answer_kinds = 12
 fixtures = 1434
-windows_passed = 1505
+windows_passed = 1506
 windows_optional_modules_skipped = 5
-wsl_verifiers_passed = 1647
-wsl_verifiers_other_modules_skipped = 4
-wsl_other_frameworks_passed = 1515
-wsl_other_frameworks_verifiers_module_skipped = 1
-agentenv_bundle_additional_check_passed = 1
+docker_frameworks_passed = ["verifiers", "harbor", "openenv", "nemo", "agentenv"]
+docker_report = "environments/mathematics_rl/DOCKER_VALIDATION.toml"
 module_language_pairs_per_framework = 140
-historical_v010_scripted_endpoint_episodes = 6
+harbor_oracle_episodes = 140
+harbor_incorrect_episodes = 24
+harbor_source_error_no_reward_verified = true
+harbor_missing_output_zero_verified = true
+openenv_native_submissions = 280
+nemo_native_submissions = 280
+nemo_supervisor_entrypoint_submissions = 280
+agentenv_native_episodes = 280
+verifiers_native_task_scores = 140
+verifiers_scripted_endpoint_episodes = 6
 real_model_benchmark = false
 training_run = false
 gpu_used = false
 hosted_ci_run = false
-hf_published = true
-harbor_docker_trial_run = false
-harbor_sdk_task_loading_verified = true
-openenv_real_client_transport_verified = true
-nemo_native_http_verified = true
-agentenv_real_episode_verified = true
+wheel_source_files_verified = 15
+wheel_fresh_offline_docker_install_verified = true
+wheel_checker_and_verifiers_plugins_verified = true
 
 [wheel]
-path = "dist/mathematics_rl-0.2.0-py3-none-any.whl"
-size = 37036
-sha256 = "c028210bb101dd2f32dca1533e84a5f1d8d41554a7769d395e3b689626681deb"
+path = "dist/mathematics_rl-0.2.1-py3-none-any.whl"
+size = 37993
+sha256 = "ef7d93d69c7de29e1470c7c78398f6c38834bca7553ebf3e01e0c43b2ccbfa18"
 
 [sdist]
-path = "dist/mathematics_rl-0.2.0.tar.gz"
-size = 485889
-sha256 = "14871a0db44ebc05da7d8bfa2f2cf20c997e88078a89f49b33ba55ef9b5cb5d1"
+path = "dist/mathematics_rl-0.2.1.tar.gz"
+size = 502837
+sha256 = "1e829fbb0f1255b3bf462d152b99146de26843180e9ad247a97b525e3406b7c4"
 
 [release]
-manifest = "dist/hf-release-0.2.0/manifest.json"
-files = 44
-bytes = 1888852
-sha256 = "6465f9e60068728a527f68dc1dd428209f0d1072d8e79b235f4bc19d23576d54"
+manifest = "dist/hf-release-0.2.1/manifest.json"
+files = 51
+bytes = 1937244
+sha256 = "4c4b2b91b7d2ac1052797f03486252c297524338599f20536c705f7fee71696a"
 retained_parquet_files = 33
 data_operations = "none"
-
-[hub_publication]
-commit = "0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a"
-url = "https://huggingface.co/datasets/d0rj/mathematics_dataset/commit/0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a"
-files_downloaded_and_sha256_verified = 44
-retained_parquet_objects_unchanged = 33
-rl_environment_tag_verified = true
-rl_environment_filter_listing_verified = true
-framework_tags_verified = ["verifiers", "harbor", "openenv", "nemo-gym", "agentenv"]
-published_package_fresh_install_verified = true
-published_package_checker_verified = true
-published_package_verifiers_plugins_verified = true
-published_package_module_count = 70
-published_package_smoke_python = "3.11.15"
+parent_commit = "0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a"
