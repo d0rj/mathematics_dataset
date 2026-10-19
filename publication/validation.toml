@@ -46,3 +46,14 @@ sha256 = "4c4b2b91b7d2ac1052797f03486252c297524338599f20536c705f7fee71696a"
 retained_parquet_files = 33
 data_operations = "none"
 parent_commit = "0d8f2b5f5e5ad4f2d51c09f10e5da6d795f9413a"
+
+[hub_publication]
+commit = "6136b3855b7137802a49433fc14b43b14283f3e6"
+url = "https://huggingface.co/datasets/d0rj/mathematics_dataset/commit/6136b3855b7137802a49433fc14b43b14283f3e6"
+files_downloaded_and_sha256_verified = 51
+retained_parquet_objects_unchanged = 33
+rl_environment_tag_verified = true
+rl_environment_filter_listing_verified = true
+framework_tags_verified = ["agentenv", "harbor", "nemo-gym", "openenv", "verifiers"]
+published_package_docker_smoke_verified = true
+published_package_scripted_vf_eval_episodes = 6

@@ -1,6 +1,11 @@
 # Hugging Face publication
 
-Version **0.2.1** adds reproducible local Docker checks and fixes found by native
+Version **0.2.1 was published on 2026-10-19**:
+[HF commit 6136b38](https://huggingface.co/datasets/d0rj/mathematics_dataset/commit/6136b3855b7137802a49433fc14b43b14283f3e6).
+All 51 release files were downloaded and SHA-256 verified, all 33 Parquet objects
+are unchanged, and the API confirms the `rl-environment` tag/filter and five SDK tags.
+
+Version 0.2.1 adds reproducible local Docker checks and fixes found by native
 container execution. See `rl/DOCKER.md` and `rl/DOCKER_VALIDATION.toml` in the
 release for protocol coverage, SDK/image pins and measured results.
 
